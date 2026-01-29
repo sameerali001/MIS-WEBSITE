@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Layout from "./components/Layout";
 import Link from "next/link";
+import MISCareerCourses from "./components/MISCareerCourses";
 
 export default function Home() {
   const [isVisible, setIsVisible] = useState(false);
@@ -258,26 +259,27 @@ export default function Home() {
       `}</style>
 
       {/* Hero Section */}
-      <section id="courses" className="space-y-6 mb-12">
-        <h1
-          className={`text-3xl md:text-4xl lg:text-5xl font-bold text-blue-600 ${
-            isVisible ? "animate-fadeInUp" : "initial-hidden"
-          }`}
-        >
-          Our flagship courses
-        </h1>
-        <p
-          className={`text-base md:text-lg text-blue-600 max-w-2xl leading-relaxed ${
-            isVisible ? "animate-fadeInUp stagger-1" : "initial-hidden"
-          }`}
-        >
-          Learn networking, hardware repair and cyber security with hands-on,
-          practical training designed for real-world jobs.
-        </p>
-      </section>
+      <div className="w-full mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <section id="courses" className="space-y-6 mb-12">
+          <h1
+            className={`text-3xl md:text-4xl lg:text-5xl font-bold text-blue-600 ${
+              isVisible ? "animate-fadeInUp" : "initial-hidden"
+            }`}
+          >
+            Our flagship courses
+          </h1>
+          <p
+            className={`text-base md:text-lg text-blue-600 max-w-2xl leading-relaxed ${
+              isVisible ? "animate-fadeInUp stagger-1" : "initial-hidden"
+            }`}
+          >
+            Learn networking, hardware repair and cyber security with hands-on,
+            practical training designed for real-world jobs.
+          </p>
+        </section>
 
-      {/* Course Cards Grid */}
-      <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {/* Course Cards Grid */}
+        <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {courses.map((c, idx) => (
           <article
             key={c.slug}
@@ -324,13 +326,15 @@ export default function Home() {
             </div>
           </article>
         ))}
+        </div>
       </div>
 
       {/* Degree Courses Section */}
-      <section id="degree-courses" className="mt-20 mb-12">
-        <h2 className="text-4xl lg:text-5xl font-bold text-blue-600 mb-10">
-          Degree Courses
-        </h2>
+      <div className="w-full mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <section id="degree-courses" className="mt-20 mb-12">
+          <h2 className="text-4xl lg:text-5xl font-bold text-blue-600 mb-10">
+            Degree Courses
+          </h2>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
             {degreeCourses.map((course, idx) => (
               <div
@@ -410,7 +414,10 @@ export default function Home() {
               </div>
             ))}
         </div>
-      </section>
+        </section>
+      </div>
+
+      <MISCareerCourses />
     </Layout>
   );
 }
