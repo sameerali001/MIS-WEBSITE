@@ -1,14 +1,34 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import CourseEnrollmentForm from "./CourseEnrollmentForm";
+import { courses as courseCatalog } from "../../lib/courseData";
 
 export default function MasterCareerCourses() {
+    const router = useRouter();
     const [isEnrollmentFormOpen, setIsEnrollmentFormOpen] = useState(false);
-    const [selectedCourse, setSelectedCourse] = useState<string | null>(null);
+    const [selectedCourse, setSelectedCourse] = useState<{ title: string; slug?: string } | null>(null);
+
+    const normalizeCourseKey = (value: string) =>
+        value.toLowerCase().replace(/[^a-z0-9]/g, "");
+
+    const getCatalogCourse = (courseTitle: string) => {
+        const targetKey = normalizeCourseKey(courseTitle);
+        return courseCatalog.find((course) => normalizeCourseKey(course.title) === targetKey);
+    };
+
+    const openCourseDetail = (courseTitle: string) => {
+        const matchedCourse = getCatalogCourse(courseTitle);
+        router.push(matchedCourse ? `/courses/${matchedCourse.slug}` : "/courses");
+    };
 
     const handleEnrollClick = (courseTitle: string) => {
-        setSelectedCourse(courseTitle);
+        const matchedCourse = getCatalogCourse(courseTitle);
+        setSelectedCourse({
+            title: courseTitle,
+            slug: matchedCourse?.slug,
+        });
         setIsEnrollmentFormOpen(true);
     };
 
@@ -156,7 +176,7 @@ export default function MasterCareerCourses() {
                             <p style={{ color: "lab(44.0605 29.0279 -86.0352)" }}>
                                 At Master, we offer a wide range of career-focused certification
                                 courses designed to equip students with the skills and knowledge
-                                needed to succeed in today's technology landscape.
+                                needed to succeed in today&apos;s technology landscape.
                             </p>
                             <p>
                                 Our certification courses are recognized by industry leaders, and
@@ -247,7 +267,7 @@ export default function MasterCareerCourses() {
                                 Explore More
                             </div>
                             <div className="mt-4">
-                                <button onClick={() => handleEnrollClick(masterCourses[0].title)} className="w-full rounded-lg bg-white hover:bg-slate-100 text-slate-900 font-semibold py-2.5 transition-colors">
+                                <button onClick={() => openCourseDetail(masterCourses[0].title)} className="w-full rounded-lg bg-white hover:bg-slate-100 text-slate-900 font-semibold py-2.5 transition-colors">
                                     Learn More
                                 </button>
                             </div>
@@ -319,9 +339,14 @@ export default function MasterCareerCourses() {
                                     <div className="mt-3 text-sm font-semibold text-slate-800 flex-1">
                                         Explore More
                                     </div>
-                                    <button onClick={() => handleEnrollClick(course.title)} className="mt-4 w-full rounded-lg bg-[#1e3a8a] hover:bg-[#1b347c] text-white font-semibold py-2.5 transition-colors">
-                                        Download Brochure
-                                    </button>
+                                    <div className="mt-4 flex gap-2">
+                                        <button onClick={() => openCourseDetail(course.title)} className="w-1/2 rounded-lg border border-[#1e3a8a] text-[#1e3a8a] hover:bg-blue-50 font-semibold py-2.5 transition-colors">
+                                            Learn More
+                                        </button>
+                                        <button onClick={() => handleEnrollClick(course.title)} className="w-1/2 rounded-lg bg-[#1e3a8a] hover:bg-[#1b347c] text-white font-semibold py-2.5 transition-colors">
+                                            Enroll Now
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         ))}
@@ -394,9 +419,14 @@ export default function MasterCareerCourses() {
                                     <div className="mt-3 text-sm font-semibold text-slate-800 flex-1">
                                         Explore More
                                     </div>
-                                    <button onClick={() => handleEnrollClick(course.title)} className="mt-4 w-full rounded-lg bg-[#1e3a8a] hover:bg-[#1b347c] text-white font-semibold py-2.5 transition-colors">
-                                        Enroll Now
-                                    </button>
+                                    <div className="mt-4 flex gap-2">
+                                        <button onClick={() => openCourseDetail(course.title)} className="w-1/2 rounded-lg border border-[#1e3a8a] text-[#1e3a8a] hover:bg-blue-50 font-semibold py-2.5 transition-colors">
+                                            Learn More
+                                        </button>
+                                        <button onClick={() => handleEnrollClick(course.title)} className="w-1/2 rounded-lg bg-[#1e3a8a] hover:bg-[#1b347c] text-white font-semibold py-2.5 transition-colors">
+                                            Enroll Now
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         ))}
@@ -449,7 +479,7 @@ export default function MasterCareerCourses() {
                                 who provide guidance throughout your learning journey.
                             </p>
                             <p>
-                                Upon completion, you'll be equipped with portfolio-worthy projects
+                                Upon completion, you&apos;ll be equipped with portfolio-worthy projects
                                 to showcase your expertise to potential employers.
                             </p>
                         </div>
@@ -513,7 +543,7 @@ export default function MasterCareerCourses() {
                                 Explore More
                             </div>
                             <div className="mt-4">
-                                <button onClick={() => handleEnrollClick(flagshipCourses[0].title)} className="w-full rounded-lg bg-white hover:bg-slate-100 text-slate-900 font-semibold py-2.5 transition-colors">
+                                <button onClick={() => openCourseDetail(flagshipCourses[0].title)} className="w-full rounded-lg bg-white hover:bg-slate-100 text-slate-900 font-semibold py-2.5 transition-colors">
                                     Learn More
                                 </button>
                             </div>
@@ -557,7 +587,7 @@ export default function MasterCareerCourses() {
 
                         <div className="space-y-5 text-slate-100/90 leading-relaxed">
                             <p>
-                                Whether you're aiming for AWS, Google Cloud, Azure, or other industry certifications,
+                                Whether you&apos;re aiming for AWS, Google Cloud, Azure, or other industry certifications,
                                 we have structured programs to prepare you for success.
                             </p>
                             <p>
@@ -629,7 +659,7 @@ export default function MasterCareerCourses() {
                                 Explore More
                             </div>
                             <div className="mt-4">
-                                <button onClick={() => handleEnrollClick(certificationCourses[0].title)} className="w-full rounded-lg bg-white hover:bg-slate-100 text-slate-900 font-semibold py-2.5 transition-colors">
+                                <button onClick={() => openCourseDetail(certificationCourses[0].title)} className="w-full rounded-lg bg-white hover:bg-slate-100 text-slate-900 font-semibold py-2.5 transition-colors">
                                     Learn More
                                 </button>
                             </div>
@@ -642,7 +672,9 @@ export default function MasterCareerCourses() {
                 <CourseEnrollmentForm
                     isOpen={isEnrollmentFormOpen}
                     onClose={handleFormClose}
-                    courseTitle={selectedCourse || 'Master Course'}
+                    courseTitle={selectedCourse?.title || 'Master Course'}
+                    courseSlug={selectedCourse?.slug}
+                    successPath={selectedCourse?.slug ? `/courses/${selectedCourse.slug}/welcome` : undefined}
                 />
             )}
         </section>

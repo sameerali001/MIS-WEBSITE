@@ -70,21 +70,20 @@ export async function POST(request: Request) {
           <p>Submission Date: ${new Date().toLocaleString()}</p>
         `;
 
-        // Send email to user
-        await transporter.sendMail({
-          from: process.env.SMTP_FROM || process.env.SMTP_USER,
-          to: email,
-          subject: `Enrollment Confirmation - ${course}`,
-          html: userEmailContent,
-        });
-
-        // Send email to owner
-        await transporter.sendMail({
-          from: process.env.SMTP_FROM || process.env.SMTP_USER,
-          to: process.env.OWNER_EMAIL || process.env.SMTP_USER,
-          subject: `New Course Enrollment Request - ${course}`,
-          html: ownerEmailContent,
-        });
+        await Promise.all([
+          transporter.sendMail({
+            from: process.env.SMTP_FROM || process.env.SMTP_USER,
+            to: email,
+            subject: `Enrollment Confirmation - ${course}`,
+            html: userEmailContent,
+          }),
+          transporter.sendMail({
+            from: process.env.SMTP_FROM || process.env.SMTP_USER,
+            to: process.env.OWNER_EMAIL || process.env.SMTP_USER,
+            subject: `New Course Enrollment Request - ${course}`,
+            html: ownerEmailContent,
+          }),
+        ]);
       } catch (emailError) {
         console.error('Email sending failed (continuing anyway):', emailError);
       }

@@ -1,6 +1,10 @@
 "use client";
+import { usePathname } from 'next/navigation';
 import Nav from './Nav';
 export default function Layout({ children }) {
+  const pathname = usePathname();
+  const isHomePage = pathname === '/';
+
   return (
     <div 
       className="min-h-screen flex flex-col bg-slate-50 text-slate-900 relative"
@@ -10,116 +14,120 @@ export default function Layout({ children }) {
       <div className="relative z-10">
         <Nav />
         
-        {/* Modern Hero Section */}
-        <style jsx>{`
-          @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-30px); }
-          }
-          .float-animation {
-            animation: float 4s ease-in-out infinite;
-          }
-        `}</style>
-        
-        <header className="bg-gradient-to-br from-blue-900 via-blue-800 to-slate-900 text-white py-12 md:py-20">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center min-h-[500px] md:min-h-[600px]">
-              {/* Left Content */}
-              <div className="flex flex-col justify-center">
-                <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-4 text-white">
-                  Better Education For Your <span className="text-cyan-400">Future</span>
-                </h1>
-                <p className="text-lg md:text-xl text-blue-100 mb-8 leading-relaxed">
-                  Practical IT training with industry experts. Hands-on courses in Networking, Hardware, and Cyber Security — placement-oriented education designed for real-world success.
-                </p>
-                
-                {/* Action Buttons */}
-                <div className="flex flex-col sm:flex-row gap-4 mb-8">
-                  <a 
-                    href="#courses" 
-                    className="px-8 py-4 bg-cyan-500 hover:bg-cyan-600 text-white font-semibold rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl text-center"
-                  >
-                    Get Started
-                  </a>
-                  <a 
-                    href="#contact" 
-                    className="px-8 py-4 bg-transparent border-2 border-cyan-500 text-cyan-400 hover:bg-cyan-500/10 font-semibold rounded-full transition-all duration-300 text-center"
-                  >
-                    Request Demo
-                  </a>
-                </div>
-                
-                {/* Stats */}
-                <div className="flex gap-8 flex-wrap">
-                  <div>
-                    <p className="text-3xl font-bold text-cyan-400">500+</p>
-                    <p className="text-sm text-blue-200">Students Trained</p>
-                  </div>
-                  <div>
-                    <p className="text-3xl font-bold text-cyan-400">95%</p>
-                    <p className="text-sm text-blue-200">Success Rate</p>
-                  </div>
-                  <div>
-                    <p className="text-3xl font-bold text-cyan-400">50+</p>
-                    <p className="text-sm text-blue-200">Courses Available</p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Right Image - Floating Animation */}
-              <div className="hidden md:flex justify-center items-center">
-                <div className="relative w-full h-full flex items-center justify-center">
-                  {/* Glowing background */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-cyan-400/20 to-blue-500/20 rounded-3xl blur-3xl"></div>
-                  
-                  {/* Floating Image Container */}
-                  <div className="relative float-animation">
-                    <svg className="w-96 h-96 text-cyan-300/30" viewBox="0 0 300 300" fill="currentColor">
-                      {/* Simplified tech illustration */}
-                      <rect x="80" y="60" width="140" height="180" rx="10" fill="none" stroke="currentColor" strokeWidth="2" opacity="0.5"/>
-                      <circle cx="150" cy="120" r="30" fill="none" stroke="currentColor" strokeWidth="2" opacity="0.4"/>
-                      <rect x="100" y="170" width="100" height="50" rx="5" fill="none" stroke="currentColor" strokeWidth="2" opacity="0.4"/>
-                      
-                      {/* Additional design elements */}
-                      <circle cx="250" cy="80" r="20" fill="currentColor" opacity="0.3"/>
-                      <circle cx="50" cy="150" r="25" fill="currentColor" opacity="0.2"/>
-                      <path d="M 100 250 Q 150 200 200 250" fill="none" stroke="currentColor" strokeWidth="2" opacity="0.3"/>
-                    </svg>
+        {isHomePage && (
+          <>
+            {/* Modern Hero Section */}
+            <style jsx>{`
+              @keyframes float {
+                0%, 100% { transform: translateY(0px); }
+                50% { transform: translateY(-30px); }
+              }
+              .float-animation {
+                animation: float 4s ease-in-out infinite;
+              }
+            `}</style>
+            
+            <header className="bg-gradient-to-br from-blue-900 via-blue-800 to-slate-900 text-white py-12 md:py-20">
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center min-h-[500px] md:min-h-[600px]">
+                  {/* Left Content */}
+                  <div className="flex flex-col justify-center">
+                    <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-4 text-white">
+                      Better Education For Your <span className="text-cyan-400">Future</span>
+                    </h1>
+                    <p className="text-lg md:text-xl text-blue-100 mb-8 leading-relaxed">
+                      Practical IT training with industry experts. Hands-on courses in Networking, Hardware, and Cyber Security — placement-oriented education designed for real-world success.
+                    </p>
                     
-                    {/* Actual responsive image or icon */}
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <svg className="w-80 h-80 text-cyan-400" fill="none" viewBox="0 0 200 200" stroke="currentColor">
-                        <defs>
-                          <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" stopColor="#06b6d4" />
-                            <stop offset="100%" stopColor="#0ea5e9" />
-                          </linearGradient>
-                        </defs>
+                    {/* Action Buttons */}
+                    <div className="flex flex-col sm:flex-row gap-4 mb-8">
+                      <a 
+                        href="#courses" 
+                        className="px-8 py-4 bg-cyan-500 hover:bg-cyan-600 text-white font-semibold rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl text-center"
+                      >
+                        Get Started
+                      </a>
+                      <a 
+                        href="#contact" 
+                        className="px-8 py-4 bg-transparent border-2 border-cyan-500 text-cyan-400 hover:bg-cyan-500/10 font-semibold rounded-full transition-all duration-300 text-center"
+                      >
+                        Request Demo
+                      </a>
+                    </div>
+                    
+                    {/* Stats */}
+                    <div className="flex gap-8 flex-wrap">
+                      <div>
+                        <p className="text-3xl font-bold text-cyan-400">500+</p>
+                        <p className="text-sm text-blue-200">Students Trained</p>
+                      </div>
+                      <div>
+                        <p className="text-3xl font-bold text-cyan-400">95%</p>
+                        <p className="text-sm text-blue-200">Success Rate</p>
+                      </div>
+                      <div>
+                        <p className="text-3xl font-bold text-cyan-400">50+</p>
+                        <p className="text-sm text-blue-200">Courses Available</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Right Image - Floating Animation */}
+                  <div className="hidden md:flex justify-center items-center">
+                    <div className="relative w-full h-full flex items-center justify-center">
+                      {/* Glowing background */}
+                      <div className="absolute inset-0 bg-gradient-to-br from-cyan-400/20 to-blue-500/20 rounded-3xl blur-3xl"></div>
+                      
+                      {/* Floating Image Container */}
+                      <div className="relative float-animation">
+                        <svg className="w-96 h-96 text-cyan-300/30" viewBox="0 0 300 300" fill="currentColor">
+                          {/* Simplified tech illustration */}
+                          <rect x="80" y="60" width="140" height="180" rx="10" fill="none" stroke="currentColor" strokeWidth="2" opacity="0.5"/>
+                          <circle cx="150" cy="120" r="30" fill="none" stroke="currentColor" strokeWidth="2" opacity="0.4"/>
+                          <rect x="100" y="170" width="100" height="50" rx="5" fill="none" stroke="currentColor" strokeWidth="2" opacity="0.4"/>
+                          
+                          {/* Additional design elements */}
+                          <circle cx="250" cy="80" r="20" fill="currentColor" opacity="0.3"/>
+                          <circle cx="50" cy="150" r="25" fill="currentColor" opacity="0.2"/>
+                          <path d="M 100 250 Q 150 200 200 250" fill="none" stroke="currentColor" strokeWidth="2" opacity="0.3"/>
+                        </svg>
                         
-                        {/* Laptop/Computer */}
-                        <rect x="20" y="40" width="160" height="100" rx="8" fill="url(#grad1)" opacity="0.8" />
-                        <rect x="30" y="50" width="140" height="80" rx="4" fill="#1e293b" />
-                        
-                        {/* Screen content */}
-                        <rect x="40" y="60" width="20" height="60" fill="#0ea5e9" opacity="0.6" />
-                        <rect x="70" y="60" width="30" height="15" fill="#0ea5e9" opacity="0.5" />
-                        <rect x="70" y="80" width="50" height="12" fill="#0ea5e9" opacity="0.4" />
-                        <rect x="70" y="95" width="40" height="20" fill="#0ea5e9" opacity="0.5" />
-                        
-                        {/* Keyboard */}
-                        <rect x="20" y="145" width="160" height="35" rx="4" fill="#334155" />
-                        <circle cx="50" cy="160" r="4" fill="#64748b" />
-                        <circle cx="75" cy="160" r="4" fill="#64748b" />
-                        <circle cx="100" cy="160" r="4" fill="#64748b" />
-                        <circle cx="150" cy="160" r="4" fill="#64748b" />
-                      </svg>
+                        {/* Actual responsive image or icon */}
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <svg className="w-80 h-80 text-cyan-400" fill="none" viewBox="0 0 200 200" stroke="currentColor">
+                            <defs>
+                              <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stopColor="#06b6d4" />
+                                <stop offset="100%" stopColor="#0ea5e9" />
+                              </linearGradient>
+                            </defs>
+                            
+                            {/* Laptop/Computer */}
+                            <rect x="20" y="40" width="160" height="100" rx="8" fill="url(#grad1)" opacity="0.8" />
+                            <rect x="30" y="50" width="140" height="80" rx="4" fill="#1e293b" />
+                            
+                            {/* Screen content */}
+                            <rect x="40" y="60" width="20" height="60" fill="#0ea5e9" opacity="0.6" />
+                            <rect x="70" y="60" width="30" height="15" fill="#0ea5e9" opacity="0.5" />
+                            <rect x="70" y="80" width="50" height="12" fill="#0ea5e9" opacity="0.4" />
+                            <rect x="70" y="95" width="40" height="20" fill="#0ea5e9" opacity="0.5" />
+                            
+                            {/* Keyboard */}
+                            <rect x="20" y="145" width="160" height="35" rx="4" fill="#334155" />
+                            <circle cx="50" cy="160" r="4" fill="#64748b" />
+                            <circle cx="75" cy="160" r="4" fill="#64748b" />
+                            <circle cx="100" cy="160" r="4" fill="#64748b" />
+                            <circle cx="150" cy="160" r="4" fill="#64748b" />
+                          </svg>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </header>
+            </header>
+          </>
+        )}
 
       <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-10">
         {children}

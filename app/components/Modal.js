@@ -9,6 +9,10 @@ export default function Modal({ isOpen, onClose, title, children, showFooter = t
     } else {
       document.body.style.overflow = 'unset';
     }
+
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
   }, [isOpen]);
 
   if (!isOpen) return null;
@@ -17,6 +21,7 @@ export default function Modal({ isOpen, onClose, title, children, showFooter = t
     <>
       {/* Backdrop with Blur Only */}
       <div
+        onClick={onClose}
         className="fixed inset-0 backdrop-blur-md z-[9999] transition-all duration-300 animate-fadeIn"
       />
 

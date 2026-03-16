@@ -2,12 +2,15 @@
 
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+import { getEnrollmentAccess } from '../../lib/enrollmentAccess';
 
 export default function EnrollmentSuccessContent() {
   const searchParams = useSearchParams();
   const courseName = searchParams.get('course') || 'the course';
+  const slug = searchParams.get('slug') || '';
   const email = searchParams.get('email') || '';
   const name = searchParams.get('name') || 'Student';
+  const learnerAccessHref = slug && getEnrollmentAccess(slug) ? `/courses/${slug}/welcome` : '/courses';
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-green-50 to-blue-50 flex items-center justify-center px-4 py-12">
@@ -42,14 +45,14 @@ export default function EnrollmentSuccessContent() {
               <svg className="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
               </svg>
-              What's Next?
+              What&apos;s Next?
             </h3>
             <ul className="space-y-3 text-slate-700">
               <li className="flex items-start gap-3">
                 <span className="flex-shrink-0 w-6 h-6 bg-green-200 text-green-700 rounded-full flex items-center justify-center text-sm font-bold">1</span>
                 <div>
                   <p className="font-semibold">Confirmation Email</p>
-                  <p className="text-sm">We've sent a confirmation email to <span className="font-medium text-blue-600">{email}</span></p>
+                  <p className="text-sm">We&apos;ve sent a confirmation email to <span className="font-medium text-blue-600">{email}</span></p>
                 </div>
               </li>
               <li className="flex items-start gap-3">
@@ -63,7 +66,7 @@ export default function EnrollmentSuccessContent() {
                 <span className="flex-shrink-0 w-6 h-6 bg-green-200 text-green-700 rounded-full flex items-center justify-center text-sm font-bold">3</span>
                 <div>
                   <p className="font-semibold">Course Access</p>
-                  <p className="text-sm">You'll receive course materials and login details via email</p>
+                  <p className="text-sm">You&apos;ll receive course materials and login details via email</p>
                 </div>
               </li>
             </ul>
@@ -94,9 +97,9 @@ export default function EnrollmentSuccessContent() {
 
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row gap-4">
-            <Link href="/courses" className="flex-1">
+            <Link href={learnerAccessHref} className="flex-1">
               <button className="w-full px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg transition-colors shadow-lg hover:shadow-xl">
-                View More Courses
+                {slug && learnerAccessHref !== '/courses' ? 'Open Learner Page' : 'View More Courses'}
               </button>
             </Link>
             <Link href="/" className="flex-1">

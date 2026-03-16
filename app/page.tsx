@@ -1,19 +1,24 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import Image from "next/image";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Layout from "./components/Layout";
 import MasterCareerCourses from "./components/MasterCareerCourses";
 import CourseEnrollmentForm from "./components/CourseEnrollmentForm";
 
 export default function Home() {
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisible] = useState(true);
   const [isEnrollmentFormOpen, setIsEnrollmentFormOpen] = useState(false);
-  const [selectedCourse, setSelectedCourse] = useState<string | null>(null);
+  const [selectedCourse, setSelectedCourse] = useState<{ title: string; slug: string } | null>(null);
+  const router = useRouter();
 
-  const handleCourseClick = (courseTitle: string) => {
-    setSelectedCourse(courseTitle);
+  const handleCourseClick = (courseTitle: string, courseSlug: string) => {
+    setSelectedCourse({ title: courseTitle, slug: courseSlug });
     setIsEnrollmentFormOpen(true);
+  };
+
+  const handleExploreCourse = (courseSlug: string) => {
+    router.push(`/courses/${courseSlug}`);
   };
 
   const handleFormClose = () => {
@@ -21,36 +26,9 @@ export default function Home() {
     setSelectedCourse(null);
   };
 
-  useEffect(() => {
-    setIsVisible(true);
-  }, []);
-
-  const courses = [
-    {
-      slug: "networking-basics",
-      title: "Networking Basics",
-      short: "Intro to networking and hardware.",
-      image:
-        "https://images.unsplash.com/photo-1599949104055-2d04026aee1e?q=80&w=1073&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    },
-    {
-      slug: "hardware-repair",
-      title: "Hardware Repair & Maintenance",
-      short: "PC repair & diagnostics.",
-      image:
-        "https://plus.unsplash.com/premium_photo-1663021816337-be7fb3833336?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    },
-    {
-      slug: "cyber-security",
-      title: "Cyber Security Essentials",
-      short: "Security fundamentals.",
-      image:
-        "https://images.unsplash.com/photo-1620825937374-87fc7d6bddc2?q=80&w=1331&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    },
-  ];
-
   const degreeCourses = [
     {
+      slug: "bca-cloud-cyber-security",
       title: "BCA In Cloud Computing & Cyber Security",
       duration: "36 Months",
       mode: "Offline/Hybrid",
@@ -58,6 +36,7 @@ export default function Home() {
         "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.1.0",
     },
     {
+      slug: "bca-multimedia-animation",
       title: "BCA In Multimedia and Animation",
       duration: "36 Months",
       mode: "Offline/Hybrid",
@@ -65,6 +44,7 @@ export default function Home() {
         "https://images.unsplash.com/photo-1611224923853-80b023f02d71?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.1.0",
     },
     {
+      slug: "bca-data-science-ai",
       title: "BCA In Data Science with AI",
       duration: "36 Months",
       mode: "Offline/Hybrid",
@@ -343,16 +323,16 @@ export default function Home() {
                   <div className="border-t-2 border-blue-600 pt-5 mt-5">
                     <div className="flex flex-col gap-3">
                       <button
-                        onClick={() => handleCourseClick(course.title)}
+                        onClick={() => handleExploreCourse(course.slug)}
                         className="text-sm font-semibold text-blue-600 hover:text-blue-700 transition-colors text-left"
                       >
                         Explore More
                       </button>
 
-                      <button onClick={() => handleCourseClick(course.title)} className="w-full px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-lg transition-all duration-300 shadow-md hover:shadow-lg">
+                      <button onClick={() => handleCourseClick(course.title, course.slug)} className="w-full px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-lg transition-all duration-300 shadow-md hover:shadow-lg">
                         Enroll Now!
                       </button>
-                      <button onClick={() => handleCourseClick(course.title)} className="w-full px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-lg transition-all duration-300">
+                      <button onClick={() => handleExploreCourse(course.slug)} className="w-full px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-lg transition-all duration-300">
                         Download Brochure
                       </button>
                     </div>
@@ -367,7 +347,9 @@ export default function Home() {
       <CourseEnrollmentForm
         isOpen={isEnrollmentFormOpen}
         onClose={handleFormClose}
-        courseTitle={selectedCourse || ''}
+        courseTitle={selectedCourse?.title || "Master Course"}
+        courseSlug={selectedCourse?.slug}
+        successPath={selectedCourse ? `/courses/${selectedCourse.slug}/welcome` : "/courses"}
       />
     </Layout>
   );

@@ -1,11 +1,17 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import Modal from './Modal';
+import { saveEnrollmentAccess } from '../../lib/enrollmentAccess';
+import { courses } from '../../lib/courseData';
 
-export default function CourseEnrollmentForm({ isOpen, onClose, courseTitle = 'Master Course' }) {
-  const router = useRouter();
+export default function CourseEnrollmentForm({
+  isOpen,
+  onClose,
+  courseTitle = 'Master Course',
+  courseSlug,
+  successPath,
+}) {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -18,6 +24,15 @@ export default function CourseEnrollmentForm({ isOpen, onClose, courseTitle = 'M
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+
+  const normalizeCourseKey = (value) => value.toLowerCase().replace(/[^a-z0-9]/g, '');
+
+  useEffect(() => {
+    setFormData((prev) => ({
+      ...prev,
+      course: courseTitle,
+    }));
+  }, [courseTitle]);
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
@@ -76,6 +91,26 @@ export default function CourseEnrollmentForm({ isOpen, onClose, courseTitle = 'M
         throw new Error(data?.error || 'Failed to submit form');
       }
 
+      const normalizedCourseTitle = normalizeCourseKey(formData.course.trim());
+      const matchedCourse = courses.find(
+        (course) => normalizeCourseKey(course.title.trim()) === normalizedCourseTitle
+      );
+      const resolvedCourseSlug = courseSlug || matchedCourse?.slug;
+      const resolvedCourseTitle = matchedCourse?.title || courseTitle;
+      const resolvedSuccessPath = resolvedCourseSlug
+        ? `/courses/${resolvedCourseSlug}/welcome`
+        : (successPath || '/courses');
+
+      if (resolvedCourseSlug) {
+        saveEnrollmentAccess({
+          courseSlug: resolvedCourseSlug,
+          courseTitle: resolvedCourseTitle,
+          name: formData.name,
+          email: formData.email,
+          enrolledAt: new Date().toISOString(),
+        });
+      }
+
       setSuccess(true);
       setFormData({
         name: '',
@@ -86,17 +121,17 @@ export default function CourseEnrollmentForm({ isOpen, onClose, courseTitle = 'M
         message: '',
       });
 
-      // Close modal and redirect to enrollment success page after 1.5 seconds
-      setTimeout(() => {
-        onClose();
-        setSuccess(false);
-        const params = new URLSearchParams({
-          course: courseTitle,
-          email: data.email || formData.email,
-          name: formData.name,
-        });
-        router.push(`/enrollment-success?${params.toString()}`);
-      }, 1500);
+      const params = new URLSearchParams({
+        course: resolvedCourseTitle,
+        slug: resolvedCourseSlug || '',
+        courseId: resolvedCourseSlug || '',
+        email: data.email || formData.email,
+        name: formData.name,
+      });
+      const targetUrl = `${resolvedSuccessPath}?${params.toString()}`;
+      window.location.assign(targetUrl);
+      onClose();
+      setSuccess(false);
     } catch (error) {
       console.error('Form submission error:', error);
       setError(error.message || 'An error occurred. Please try again.');

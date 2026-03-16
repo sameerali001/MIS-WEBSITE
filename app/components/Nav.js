@@ -61,7 +61,7 @@ export default function Nav() {
                 />
                 <div className="absolute top-full left-0 pt-2 z-[95]">
                   <div className="bg-white shadow-2xl rounded-2xl border border-slate-200 overflow-hidden w-[900px] max-h-[650px] overflow-y-auto">
-                    <CoursesCatalog onCourseClick={closeCoursesDropdown} />
+                    <CoursesCatalog onNavigateAway={closeCoursesDropdown} />
                   </div>
                 </div>
               </>
@@ -82,6 +82,11 @@ export default function Nav() {
               <Link href="/faculty" className="block px-4 py-2 text-slate-700 hover:bg-blue-50 hover:text-blue-600 text-sm">Faculty</Link>
             </div>
           </div>
+
+          {/* About Us */}
+          <Link href="/about" className="px-4 py-2 text-slate-700 hover:text-blue-600 font-medium transition-colors">
+            About Us
+          </Link>
 
           {/* Online Mode */}
           <Link href="/online" className="px-4 py-2 text-slate-700 hover:text-blue-600 font-medium transition-colors">
@@ -137,6 +142,7 @@ export default function Nav() {
         isOpen={isModalOpen} 
         onClose={handleModalClose}
         courseTitle="Master Course"
+        successPath="/courses"
       />
     </nav>
   );
