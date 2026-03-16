@@ -1,7 +1,7 @@
 import '../styles/globals.css';
 
 export const metadata = {
-  title: 'MIS Institute'
+  title: 'Master Institute'
 };
 
 export default function RootLayout({ children }) {

@@ -3,11 +3,23 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Layout from "./components/Layout";
-import Link from "next/link";
-import MISCareerCourses from "./components/MISCareerCourses";
+import MasterCareerCourses from "./components/MasterCareerCourses";
+import CourseEnrollmentForm from "./components/CourseEnrollmentForm";
 
 export default function Home() {
   const [isVisible, setIsVisible] = useState(false);
+  const [isEnrollmentFormOpen, setIsEnrollmentFormOpen] = useState(false);
+  const [selectedCourse, setSelectedCourse] = useState<string | null>(null);
+
+  const handleCourseClick = (courseTitle: string) => {
+    setSelectedCourse(courseTitle);
+    setIsEnrollmentFormOpen(true);
+  };
+
+  const handleFormClose = () => {
+    setIsEnrollmentFormOpen(false);
+    setSelectedCourse(null);
+  };
 
   useEffect(() => {
     setIsVisible(true);
@@ -260,74 +272,9 @@ export default function Home() {
 
       {/* Hero Section */}
       <div className="w-full px-4 sm:px-6 lg:px-8">
-        <section id="courses" className="space-y-6 mb-12">
-          <h1
-            className={`text-3xl md:text-4xl lg:text-5xl font-bold text-blue-600 ${
-              isVisible ? "animate-fadeInUp" : "initial-hidden"
-            }`}
-          >
-            Our flagship courses
-          </h1>
-          <p
-            className={`text-base md:text-lg text-blue-600 max-w-2xl leading-relaxed ${
-              isVisible ? "animate-fadeInUp stagger-1" : "initial-hidden"
-            }`}
-          >
-            Learn networking, hardware repair and cyber security with hands-on,
-            practical training designed for real-world jobs.
-          </p>
-        </section>
-
-        {/* Course Cards Grid */}
-        <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {courses.map((c, idx) => (
-            <article
-              key={c.slug}
-              className={`flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm card-hover-effect ${
-                isVisible
-                  ? `animate-scaleIn stagger-${idx + 2}`
-                  : "initial-hidden"
-              }`}
-            >
-              <div className="relative h-48 sm:h-40 md:h-48 overflow-hidden">
-                <img
-                  src={c.image}
-                  alt={c.title}
-                  className="h-full w-full object-cover card-image"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300" />
-              </div>
-              <div className="flex flex-1 flex-col gap-3 p-5 sm:p-6">
-                <h2 className="text-xl font-bold text-slate-900 leading-tight">
-                  {c.title}
-                </h2>
-                <p className="text-sm sm:text-base text-slate-600 flex-1">
-                  {c.short}
-                </p>
-                <Link
-                  href={`/courses/${c.slug}`}
-                  className="mt-4 w-full inline-flex items-center justify-center rounded-lg bg-blue-600 hover:bg-blue-700 px-6 py-2.5 text-sm font-semibold text-white transition-all duration-300 shadow-md hover:shadow-lg"
-                >
-                  View course
-                  <svg
-                    className="ml-2 w-4 h-4"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 5l7 7-7 7"
-                    />
-                  </svg>
-                </Link>
-              </div>
-            </article>
-          ))}
-        </div>
       </div>
+
+      <MasterCareerCourses />
 
       {/* Degree Courses Section */}
       <div className="w-full px-4 sm:px-6 lg:px-8">
@@ -395,17 +342,17 @@ export default function Home() {
 
                   <div className="border-t-2 border-blue-600 pt-5 mt-5">
                     <div className="flex flex-col gap-3">
-                      <Link
-                        href="#"
-                        className="text-sm font-semibold text-blue-600 hover:text-blue-700 transition-colors"
+                      <button
+                        onClick={() => handleCourseClick(course.title)}
+                        className="text-sm font-semibold text-blue-600 hover:text-blue-700 transition-colors text-left"
                       >
                         Explore More
-                      </Link>
+                      </button>
 
-                      <button className="w-full px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-lg transition-all duration-300 shadow-md hover:shadow-lg">
+                      <button onClick={() => handleCourseClick(course.title)} className="w-full px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-lg transition-all duration-300 shadow-md hover:shadow-lg">
                         Enroll Now!
                       </button>
-                      <button className="w-full px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-lg transition-all duration-300">
+                      <button onClick={() => handleCourseClick(course.title)} className="w-full px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-lg transition-all duration-300">
                         Download Brochure
                       </button>
                     </div>
@@ -417,40 +364,11 @@ export default function Home() {
         </section>
       </div>
 
-      <div className="w-full px-4 sm:px-6 lg:px-8">
-        <section id="mis-career-courses" className="mb-20">
-          <h2 className="text-4xl lg:text-5xl font-bold text-blue-600 mb-10">
-            MIS Career Courses
-          </h2>
-          <div className="bg-gradient-to-r from-blue-100 to-blue-200 rounded-2xl border border-slate-300 shadow-md overflow-hidden">
-            <div className="relative h-48 sm:h-60 md:h-72 overflow-hidden">
-              <img
-                src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0"
-                alt="MIS Career Course"
-                className="h-full w-full object-cover card-image"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300" />
-            </div>
-            <div className="p-6">
-              <h3 className="text-2xl font-bold text-blue-600 mb-4 leading-tight">
-                MIS Career Courses
-              </h3>
-              <p className="text-sm sm:text-base text-slate-700 mb-6">
-                Get industry-ready with our MIS Career Courses, designed to
-                equip you with the skills and certifications needed for a
-                successful career in IT.
-              </p>
-              <Link
-                href="#"
-                className="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-lg transition-all duration-300 shadow-md hover:shadow-lg"
-              >
-                Explore Courses
-              </Link>
-            </div>
-          </div>
-        </section>
-      </div>
-      <MISCareerCourses />
+      <CourseEnrollmentForm
+        isOpen={isEnrollmentFormOpen}
+        onClose={handleFormClose}
+        courseTitle={selectedCourse || ''}
+      />
     </Layout>
   );
 }
