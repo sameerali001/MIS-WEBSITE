@@ -1,16 +1,56 @@
 "use client";
+import { useState } from 'react';
 import { usePathname } from 'next/navigation';
 import Nav from './Nav';
 export default function Layout({ children }) {
   const pathname = usePathname();
   const isHomePage = pathname === '/';
+  const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
+  const [isCursorVisible, setIsCursorVisible] = useState(false);
+  const [heroCursorPosition, setHeroCursorPosition] = useState({ x: 50, y: 50 });
+  const [isHeroCursorVisible, setIsHeroCursorVisible] = useState(false);
+  const [heroImageError, setHeroImageError] = useState(false);
+
+  const handleGlobalMouseMove = (event) => {
+    const x = event.clientX;
+    const y = event.clientY;
+    setCursorPosition({ x, y });
+    if (!isCursorVisible) {
+      setIsCursorVisible(true);
+    }
+  };
+
+  const handleHeroMouseMove = (event) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    const x = ((event.clientX - rect.left) / rect.width) * 100;
+    const y = ((event.clientY - rect.top) / rect.height) * 100;
+    setHeroCursorPosition({ x, y });
+    if (!isHeroCursorVisible) {
+      setIsHeroCursorVisible(true);
+    }
+  };
 
   return (
     <div 
       className="min-h-screen flex flex-col bg-slate-50 text-slate-900 relative"
+      onMouseMove={handleGlobalMouseMove}
     >
-      {/* Dark Overlay - Removed (no background image) */}
-      
+      <div
+        className="pointer-events-none fixed h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-300/20 blur-3xl transition-all duration-200 ease-out z-[5]"
+        style={{
+          left: `${cursorPosition.x}px`,
+          top: `${cursorPosition.y}px`,
+          opacity: isCursorVisible ? 1 : 0,
+        }}
+      />
+      <div
+        className="pointer-events-none fixed h-36 w-36 -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-300/20 blur-2xl transition-all duration-150 ease-out z-[5]"
+        style={{
+          left: `${cursorPosition.x}px`,
+          top: `${cursorPosition.y}px`,
+          opacity: isCursorVisible ? 1 : 0,
+        }}
+      />
       <div className="relative z-10">
         <Nav />
         
@@ -25,10 +65,60 @@ export default function Layout({ children }) {
               .float-animation {
                 animation: float 4s ease-in-out infinite;
               }
+              @keyframes techPulse {
+                0%, 100% { transform: scale(1) translateY(0px); opacity: 0.35; }
+                50% { transform: scale(1.08) translateY(-16px); opacity: 0.55; }
+              }
+              @keyframes gridDrift {
+                0% { background-position: 0 0, 0 0; }
+                100% { background-position: 80px 80px, 40px 40px; }
+              }
+              .tech-orb {
+                animation: techPulse 8s ease-in-out infinite;
+              }
+              .tech-grid {
+                animation: gridDrift 14s linear infinite;
+              }
             `}</style>
             
-            <header className="bg-gradient-to-br from-blue-900 via-blue-800 to-slate-900 text-white py-12 md:py-20">
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <header
+              className="relative overflow-hidden text-white py-12 md:py-20"
+              onMouseMove={handleHeroMouseMove}
+              onMouseLeave={() => setIsHeroCursorVisible(false)}
+            >
+              <div className="absolute inset-0">
+                <div className="absolute inset-0 bg-slate-950" />
+                <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/20 via-blue-500/10 to-slate-900" />
+                <div
+                  className="absolute inset-0 tech-grid"
+                  style={{
+                    backgroundImage:
+                      'linear-gradient(rgba(34,211,238,0.10) 1px, transparent 1px), linear-gradient(90deg, rgba(14,165,233,0.10) 1px, transparent 1px)',
+                    backgroundSize: '48px 48px, 48px 48px',
+                  }}
+                />
+                <div className="tech-orb absolute left-[10%] top-[8%] h-44 w-44 rounded-full bg-cyan-400/25 blur-3xl" />
+                <div className="tech-orb absolute right-[8%] top-[18%] h-56 w-56 rounded-full bg-blue-500/20 blur-3xl" />
+                <div className="tech-orb absolute bottom-[10%] left-[30%] h-40 w-40 rounded-full bg-cyan-300/20 blur-3xl" />
+                <div className="absolute inset-0 bg-slate-950/55" />
+                <div
+                  className="pointer-events-none absolute h-80 w-80 -translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-300/30 blur-3xl transition-all duration-200 ease-out"
+                  style={{
+                    left: `${heroCursorPosition.x}%`,
+                    top: `${heroCursorPosition.y}%`,
+                    opacity: isHeroCursorVisible ? 1 : 0,
+                  }}
+                />
+                <div
+                  className="pointer-events-none absolute h-44 w-44 -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-300/25 blur-2xl transition-all duration-150 ease-out"
+                  style={{
+                    left: `${heroCursorPosition.x}%`,
+                    top: `${heroCursorPosition.y}%`,
+                    opacity: isHeroCursorVisible ? 1 : 0,
+                  }}
+                />
+              </div>
+              <div className="relative mx-auto w-[85%] px-4 sm:px-6 lg:px-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center min-h-[500px] md:min-h-[600px]">
                   {/* Left Content */}
                   <div className="flex flex-col justify-center">
@@ -80,46 +170,19 @@ export default function Layout({ children }) {
                       
                       {/* Floating Image Container */}
                       <div className="relative float-animation">
-                        <svg className="w-96 h-96 text-cyan-300/30" viewBox="0 0 300 300" fill="currentColor">
-                          {/* Simplified tech illustration */}
-                          <rect x="80" y="60" width="140" height="180" rx="10" fill="none" stroke="currentColor" strokeWidth="2" opacity="0.5"/>
-                          <circle cx="150" cy="120" r="30" fill="none" stroke="currentColor" strokeWidth="2" opacity="0.4"/>
-                          <rect x="100" y="170" width="100" height="50" rx="5" fill="none" stroke="currentColor" strokeWidth="2" opacity="0.4"/>
-                          
-                          {/* Additional design elements */}
-                          <circle cx="250" cy="80" r="20" fill="currentColor" opacity="0.3"/>
-                          <circle cx="50" cy="150" r="25" fill="currentColor" opacity="0.2"/>
-                          <path d="M 100 250 Q 150 200 200 250" fill="none" stroke="currentColor" strokeWidth="2" opacity="0.3"/>
-                        </svg>
-                        
-                        {/* Actual responsive image or icon */}
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <svg className="w-80 h-80 text-cyan-400" fill="none" viewBox="0 0 200 200" stroke="currentColor">
-                            <defs>
-                              <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" stopColor="#06b6d4" />
-                                <stop offset="100%" stopColor="#0ea5e9" />
-                              </linearGradient>
-                            </defs>
-                            
-                            {/* Laptop/Computer */}
-                            <rect x="20" y="40" width="160" height="100" rx="8" fill="url(#grad1)" opacity="0.8" />
-                            <rect x="30" y="50" width="140" height="80" rx="4" fill="#1e293b" />
-                            
-                            {/* Screen content */}
-                            <rect x="40" y="60" width="20" height="60" fill="#0ea5e9" opacity="0.6" />
-                            <rect x="70" y="60" width="30" height="15" fill="#0ea5e9" opacity="0.5" />
-                            <rect x="70" y="80" width="50" height="12" fill="#0ea5e9" opacity="0.4" />
-                            <rect x="70" y="95" width="40" height="20" fill="#0ea5e9" opacity="0.5" />
-                            
-                            {/* Keyboard */}
-                            <rect x="20" y="145" width="160" height="35" rx="4" fill="#334155" />
-                            <circle cx="50" cy="160" r="4" fill="#64748b" />
-                            <circle cx="75" cy="160" r="4" fill="#64748b" />
-                            <circle cx="100" cy="160" r="4" fill="#64748b" />
-                            <circle cx="150" cy="160" r="4" fill="#64748b" />
-                          </svg>
-                        </div>
+                        {!heroImageError ? (
+                          <img
+                            src="https://bootstrapmade.com/content/demo/Arsha/assets/img/hero-img.png"
+                            alt="Technology illustration"
+                            className="w-[540px] max-w-full h-auto drop-shadow-2xl"
+                            onError={() => setHeroImageError(true)}
+                          />
+                        ) : (
+                          <div className="w-[540px] max-w-full rounded-2xl border border-cyan-300/30 bg-slate-900/40 p-8 text-center text-cyan-200">
+                            <p className="text-lg font-semibold">Add image file:</p>
+                            <p className="mt-2 text-sm">public/tech-hero-illustration.png</p>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -129,13 +192,13 @@ export default function Layout({ children }) {
           </>
         )}
 
-      <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-10">
+      <main className="mx-auto flex-1 w-[85%] px-4 sm:px-6 lg:px-8 py-10">
         {children}
       </main>
 
       {/* Professional Footer */}
       <footer className="bg-slate-900 text-slate-100 mt-20 relative z-10">
-        <div className="max-w-7xl mx-auto px-6 py-16">
+        <div className="mx-auto w-[85%] px-6 py-16">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
             {/* Company Info */}
             <div>

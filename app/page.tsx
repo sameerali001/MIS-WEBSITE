@@ -306,10 +306,10 @@ export default function Home() {
       {/* Degree Courses Section */}
       <div className="w-full px-4 sm:px-6 lg:px-8">
         <section id="degree-courses" className="mt-20 mb-12">
-          <h2 className="text-4xl lg:text-5xl font-bold text-blue-600 mb-10">
+          <h2 className="mb-8 text-3xl font-bold text-blue-600 sm:text-4xl lg:mb-10 lg:text-5xl">
             Degree Courses
           </h2>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 lg:gap-8">
             {degreeCourses.map((course, idx) => (
               <div
                 key={idx}
@@ -319,7 +319,7 @@ export default function Home() {
                     : "initial-hidden"
                 }`}
               >
-                <div className="h-32 sm:h-36 bg-white flex items-center justify-center overflow-hidden relative">
+                <div className="relative flex h-28 items-center justify-center overflow-hidden bg-white sm:h-36">
                   <img
                     src={course.image}
                     alt={course.title}
@@ -327,12 +327,12 @@ export default function Home() {
                   />
                 </div>
 
-                <div className="p-5 sm:p-6">
-                  <h3 className="text-lg sm:text-xl font-bold text-blue-600 mb-4 leading-tight">
+                <div className="p-4 sm:p-6">
+                  <h3 className="mb-3 text-base font-bold leading-tight text-blue-600 sm:text-xl">
                     {course.title}
                   </h3>
 
-                  <div className="flex flex-wrap gap-3 sm:gap-4 text-sm text-slate-600 mb-5">
+                  <div className="mb-4 flex flex-wrap gap-2 text-xs text-slate-600 sm:gap-4 sm:text-sm">
                     <div className="flex items-center gap-2 bg-white px-0 py-2 rounded-lg">
                       <svg
                         className="w-4 h-4 text-blue-600"

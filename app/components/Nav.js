@@ -8,6 +8,7 @@ import CourseEnrollmentForm from './CourseEnrollmentForm';
 export default function Nav() {
   const [isCoursesDropdownOpen, setIsCoursesDropdownOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const handleEnrollClick = () => {
     setIsModalOpen(true);
@@ -25,6 +26,14 @@ export default function Nav() {
     setIsCoursesDropdownOpen(false);
   };
 
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  const closeMobileMenu = () => {
+    setIsMobileMenuOpen(false);
+  };
+
   return (
     <nav className="sticky top-0 z-[100] bg-white shadow-md">
       <div className="w-full px-4 py-4 sm:px-6 lg:px-8 xl:px-10">
@@ -38,12 +47,12 @@ export default function Nav() {
         </div>
 
         {/* Navigation Menu */}
-        <div className="hidden 2xl:flex min-w-0 flex-1 items-center justify-center gap-1">
+        <div className="hidden xl:flex min-w-0 flex-1 items-center justify-center gap-0.5 2xl:gap-1">
           {/* All Courses - Click Dropdown */}
           <div className="relative">
-            <button 
+            <button
               onClick={toggleCoursesDropdown}
-              className="relative px-6 py-2 rounded-full font-semibold transition-all duration-300 flex items-center gap-2 bg-cyan-500 hover:bg-cyan-600 text-white shadow-md hover:shadow-lg"
+              className="relative px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 flex items-center gap-2 bg-cyan-500 hover:bg-cyan-600 text-white shadow-md hover:shadow-lg 2xl:px-6"
               aria-label="Toggle courses catalog"
             >
               All Courses
@@ -71,7 +80,7 @@ export default function Nav() {
 
           {/* About Dropdown */}
           <div className="relative group">
-            <button className="px-4 py-2 text-slate-700 hover:text-blue-600 font-medium flex items-center gap-1 transition-colors">
+            <button className="px-3 py-2 text-sm text-slate-700 hover:text-blue-600 font-medium flex items-center gap-1 transition-colors 2xl:px-4">
               About Master
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
@@ -85,27 +94,27 @@ export default function Nav() {
           </div>
 
           {/* Online Mode */}
-          <Link href="/online" className="px-4 py-2 text-slate-700 hover:text-blue-600 font-medium transition-colors">
+          <Link href="/online" className="px-3 py-2 text-sm text-slate-700 hover:text-blue-600 font-medium transition-colors 2xl:px-4">
             Online
           </Link>
 
           {/* Offline Mode */}
-          <Link href="/offline" className="px-4 py-2 text-slate-700 hover:text-blue-600 font-medium transition-colors">
+          <Link href="/offline" className="px-3 py-2 text-sm text-slate-700 hover:text-blue-600 font-medium transition-colors 2xl:px-4">
             Offline
           </Link>
 
           {/* Schedule */}
-          <Link href="/schedule" className="px-4 py-2 text-slate-700 hover:text-blue-600 font-medium transition-colors">
+          <Link href="/schedule" className="px-3 py-2 text-sm text-slate-700 hover:text-blue-600 font-medium transition-colors 2xl:px-4">
             Schedule
           </Link>
 
           {/* Franchise */}
-          <Link href="/franchise" className="px-4 py-2 text-slate-700 hover:text-blue-600 font-medium transition-colors">
+          <Link href="/franchise" className="px-3 py-2 text-sm text-slate-700 hover:text-blue-600 font-medium transition-colors 2xl:px-4">
             Franchise
           </Link>
 
           {/* Contact */}
-          <Link href="/contact" className="px-4 py-2 text-slate-700 hover:text-blue-600 font-medium transition-colors">
+          <Link href="/contact" className="px-3 py-2 text-sm text-slate-700 hover:text-blue-600 font-medium transition-colors 2xl:px-4">
             Contact Us
           </Link>
         </div>
@@ -131,19 +140,115 @@ export default function Nav() {
           </div>
 
           {/* Profile Icon */}
-          <button className="w-10 h-10 bg-blue-500 hover:bg-blue-600 text-white rounded-full flex items-center justify-center font-bold transition-colors">
+          <button className="hidden sm:flex w-10 h-10 bg-blue-500 hover:bg-blue-600 text-white rounded-full items-center justify-center font-bold transition-colors">
             U
           </button>
 
           {/* Enroll Button */}
           <button
             onClick={handleEnrollClick}
-            className="hidden md:block px-6 py-2 border-2 border-blue-500 text-blue-500 hover:bg-blue-50 rounded-full font-semibold transition-colors"
+            className="hidden lg:block px-5 py-2 border-2 border-blue-500 text-blue-500 hover:bg-blue-50 rounded-full font-semibold transition-colors"
           >
             Enroll
           </button>
+
+          <button
+            onClick={toggleMobileMenu}
+            className="inline-flex xl:hidden h-10 w-10 items-center justify-center rounded-full border border-slate-200 text-slate-700"
+            aria-label="Toggle menu"
+            aria-expanded={isMobileMenuOpen}
+          >
+            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              {isMobileMenuOpen ? (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              ) : (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              )}
+            </svg>
+          </button>
         </div>
         </div>
+      </div>
+
+      <div
+        className={`fixed inset-0 z-[98] xl:hidden transition ${
+          isMobileMenuOpen ? 'pointer-events-auto' : 'pointer-events-none'
+        }`}
+      >
+        <button
+          onClick={closeMobileMenu}
+          aria-label="Close menu backdrop"
+          className={`absolute inset-0 bg-slate-950/35 transition-opacity ${
+            isMobileMenuOpen ? 'opacity-100' : 'opacity-0'
+          }`}
+        />
+
+        <aside
+          className={`absolute right-0 top-0 h-full w-[86vw] max-w-sm border-l border-slate-200 bg-white px-4 pb-6 pt-5 shadow-2xl transition-transform duration-300 ${
+            isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
+          }`}
+        >
+          <div className="mb-4 flex items-center justify-between border-b border-slate-200 pb-3">
+            <p className="text-base font-bold text-slate-900">Menu</p>
+            <button
+              onClick={closeMobileMenu}
+              className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-slate-700"
+              aria-label="Close menu"
+            >
+              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+
+          <div className="grid gap-2">
+            <Link onClick={closeMobileMenu} href="/courses" className="rounded-xl px-3 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-100">
+              All Courses
+            </Link>
+            <Link onClick={closeMobileMenu} href="/about" className="rounded-xl px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100">
+              About Us
+            </Link>
+            <Link onClick={closeMobileMenu} href="/mission" className="rounded-xl px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100">
+              Our Mission
+            </Link>
+            <Link onClick={closeMobileMenu} href="/faculty" className="rounded-xl px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100">
+              Faculty
+            </Link>
+            <Link onClick={closeMobileMenu} href="/online" className="rounded-xl px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100">
+              Online
+            </Link>
+            <Link onClick={closeMobileMenu} href="/offline" className="rounded-xl px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100">
+              Offline
+            </Link>
+            <Link onClick={closeMobileMenu} href="/schedule" className="rounded-xl px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100">
+              Schedule
+            </Link>
+            <Link onClick={closeMobileMenu} href="/franchise" className="rounded-xl px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100">
+              Franchise
+            </Link>
+            <Link onClick={closeMobileMenu} href="/contact" className="rounded-xl px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100">
+              Contact Us
+            </Link>
+          </div>
+
+          <div className="mt-5 flex flex-col gap-3">
+            <a
+              href="tel:+919318306116"
+              className="inline-flex items-center justify-center rounded-xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700"
+            >
+              +91 9318306116
+            </a>
+            <button
+              onClick={() => {
+                closeMobileMenu();
+                handleEnrollClick();
+              }}
+              className="inline-flex items-center justify-center rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700"
+            >
+              Enroll
+            </button>
+          </div>
+        </aside>
       </div>
 
       {/* Course Enrollment Form */}

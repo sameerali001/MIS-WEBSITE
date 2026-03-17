@@ -173,7 +173,7 @@ export default function MasterCareerCourses() {
                     {/* Middle Content */}
                     <div className="grid gap-6 lg:grid-cols-2">
                         <div className="space-y-5 text-slate-100/90 leading-relaxed">
-                            <p style={{ color: "lab(44.0605 29.0279 -86.0352)" }}>
+                            <p className="text-white">
                                 At Master, we offer a wide range of career-focused certification
                                 courses designed to equip students with the skills and knowledge
                                 needed to succeed in today&apos;s technology landscape.
