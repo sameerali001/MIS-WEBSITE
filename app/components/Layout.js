@@ -1,33 +1,72 @@
 "use client";
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import Nav from './Nav';
 export default function Layout({ children }) {
   const pathname = usePathname();
   const isHomePage = pathname === '/';
-  const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
-  const [isCursorVisible, setIsCursorVisible] = useState(false);
-  const [heroCursorPosition, setHeroCursorPosition] = useState({ x: 50, y: 50 });
-  const [isHeroCursorVisible, setIsHeroCursorVisible] = useState(false);
   const [heroImageError, setHeroImageError] = useState(false);
+  const globalGlowRef = useRef(null);
+  const globalGlowSmallRef = useRef(null);
+  const heroGlowRef = useRef(null);
+  const heroGlowSmallRef = useRef(null);
+  const globalPointerRef = useRef({ x: 0, y: 0 });
+  const heroPointerRef = useRef({ x: 0, y: 0 });
+  const globalRafRef = useRef(null);
+  const heroRafRef = useRef(null);
+
+  useEffect(() => {
+    return () => {
+      if (globalRafRef.current) cancelAnimationFrame(globalRafRef.current);
+      if (heroRafRef.current) cancelAnimationFrame(heroRafRef.current);
+    };
+  }, []);
 
   const handleGlobalMouseMove = (event) => {
-    const x = event.clientX;
-    const y = event.clientY;
-    setCursorPosition({ x, y });
-    if (!isCursorVisible) {
-      setIsCursorVisible(true);
-    }
+    globalPointerRef.current = { x: event.clientX, y: event.clientY };
+
+    if (globalRafRef.current) return;
+
+    globalRafRef.current = requestAnimationFrame(() => {
+      const { x, y } = globalPointerRef.current;
+      if (globalGlowRef.current) {
+        globalGlowRef.current.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%)`;
+        globalGlowRef.current.style.opacity = '1';
+      }
+      if (globalGlowSmallRef.current) {
+        globalGlowSmallRef.current.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%)`;
+        globalGlowSmallRef.current.style.opacity = '1';
+      }
+      globalRafRef.current = null;
+    });
   };
 
   const handleHeroMouseMove = (event) => {
     const rect = event.currentTarget.getBoundingClientRect();
-    const x = ((event.clientX - rect.left) / rect.width) * 100;
-    const y = ((event.clientY - rect.top) / rect.height) * 100;
-    setHeroCursorPosition({ x, y });
-    if (!isHeroCursorVisible) {
-      setIsHeroCursorVisible(true);
-    }
+    heroPointerRef.current = {
+      x: event.clientX - rect.left,
+      y: event.clientY - rect.top,
+    };
+
+    if (heroRafRef.current) return;
+
+    heroRafRef.current = requestAnimationFrame(() => {
+      const { x, y } = heroPointerRef.current;
+      if (heroGlowRef.current) {
+        heroGlowRef.current.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%)`;
+        heroGlowRef.current.style.opacity = '1';
+      }
+      if (heroGlowSmallRef.current) {
+        heroGlowSmallRef.current.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%)`;
+        heroGlowSmallRef.current.style.opacity = '1';
+      }
+      heroRafRef.current = null;
+    });
+  };
+
+  const handleHeroMouseLeave = () => {
+    if (heroGlowRef.current) heroGlowRef.current.style.opacity = '0';
+    if (heroGlowSmallRef.current) heroGlowSmallRef.current.style.opacity = '0';
   };
 
   return (
@@ -36,20 +75,14 @@ export default function Layout({ children }) {
       onMouseMove={handleGlobalMouseMove}
     >
       <div
-        className="pointer-events-none fixed h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-300/20 blur-3xl transition-all duration-200 ease-out z-[5]"
-        style={{
-          left: `${cursorPosition.x}px`,
-          top: `${cursorPosition.y}px`,
-          opacity: isCursorVisible ? 1 : 0,
-        }}
+        ref={globalGlowRef}
+        className="pointer-events-none fixed left-0 top-0 h-72 w-72 rounded-full bg-cyan-300/20 blur-3xl transition-opacity duration-200 ease-out z-[5] will-change-transform"
+        style={{ opacity: 0 }}
       />
       <div
-        className="pointer-events-none fixed h-36 w-36 -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-300/20 blur-2xl transition-all duration-150 ease-out z-[5]"
-        style={{
-          left: `${cursorPosition.x}px`,
-          top: `${cursorPosition.y}px`,
-          opacity: isCursorVisible ? 1 : 0,
-        }}
+        ref={globalGlowSmallRef}
+        className="pointer-events-none fixed left-0 top-0 h-36 w-36 rounded-full bg-blue-300/20 blur-2xl transition-opacity duration-150 ease-out z-[5] will-change-transform"
+        style={{ opacity: 0 }}
       />
       <div className="relative z-10">
         <Nav />
@@ -84,7 +117,7 @@ export default function Layout({ children }) {
             <header
               className="relative overflow-hidden text-white py-12 md:py-20"
               onMouseMove={handleHeroMouseMove}
-              onMouseLeave={() => setIsHeroCursorVisible(false)}
+              onMouseLeave={handleHeroMouseLeave}
             >
               <div className="absolute inset-0">
                 <div className="absolute inset-0 bg-slate-950" />
@@ -102,20 +135,14 @@ export default function Layout({ children }) {
                 <div className="tech-orb absolute bottom-[10%] left-[30%] h-40 w-40 rounded-full bg-cyan-300/20 blur-3xl" />
                 <div className="absolute inset-0 bg-slate-950/55" />
                 <div
-                  className="pointer-events-none absolute h-80 w-80 -translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-300/30 blur-3xl transition-all duration-200 ease-out"
-                  style={{
-                    left: `${heroCursorPosition.x}%`,
-                    top: `${heroCursorPosition.y}%`,
-                    opacity: isHeroCursorVisible ? 1 : 0,
-                  }}
+                  ref={heroGlowRef}
+                  className="pointer-events-none absolute left-0 top-0 h-80 w-80 rounded-full bg-cyan-300/30 blur-3xl transition-opacity duration-200 ease-out will-change-transform"
+                  style={{ opacity: 0 }}
                 />
                 <div
-                  className="pointer-events-none absolute h-44 w-44 -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-300/25 blur-2xl transition-all duration-150 ease-out"
-                  style={{
-                    left: `${heroCursorPosition.x}%`,
-                    top: `${heroCursorPosition.y}%`,
-                    opacity: isHeroCursorVisible ? 1 : 0,
-                  }}
+                  ref={heroGlowSmallRef}
+                  className="pointer-events-none absolute left-0 top-0 h-44 w-44 rounded-full bg-blue-300/25 blur-2xl transition-opacity duration-150 ease-out will-change-transform"
+                  style={{ opacity: 0 }}
                 />
               </div>
               <div className="relative mx-auto w-[85%] px-4 sm:px-6 lg:px-8">
