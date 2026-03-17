@@ -192,8 +192,8 @@ export default function CoursesCategoriesPage() {
                           <p className="mt-2 text-lg font-semibold text-slate-900">{course.duration}</p>
                         </div>
                         <div className="rounded-2xl bg-slate-50 p-4">
-                          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">Fee</p>
-                          <p className="mt-2 text-lg font-semibold text-slate-900">{course.price}</p>
+                          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">Details</p>
+                          <p className="mt-2 text-lg font-semibold text-slate-900">Will discuss on call</p>
                         </div>
                         <div className="rounded-2xl bg-slate-50 p-4">
                           <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">Learners</p>

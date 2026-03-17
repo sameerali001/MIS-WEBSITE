@@ -84,14 +84,14 @@ export default function EnrollmentSuccessContent() {
             </div>
             <div className="bg-slate-50 rounded-lg p-4 border border-slate-200">
               <p className="text-xs font-semibold text-slate-600 uppercase mb-1">Contact Us</p>
-              <p className="text-lg font-bold text-slate-900">+91 9876543210</p>
+              <p className="text-lg font-bold text-slate-900">+91 9318306116</p>
             </div>
           </div>
 
           {/* Contact Info */}
           <div className="bg-amber-50 rounded-lg p-4 border border-amber-200 mb-8">
             <p className="text-sm text-slate-700">
-              <span className="font-semibold text-amber-900">📧 Questions?</span> Email us at <span className="font-medium text-blue-600">support@mis.edu.in</span> or call <span className="font-medium">+91-9876543210</span>
+              <span className="font-semibold text-amber-900">📧 Questions?</span> Email us at <span className="font-medium text-blue-600">misinfotechservices@gmail.com</span> or call <span className="font-medium">+91-9318306116</span>
             </p>
           </div>
 

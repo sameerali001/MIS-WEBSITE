@@ -252,6 +252,53 @@ export default function Home() {
 
       {/* Hero Section */}
       <div className="w-full px-4 sm:px-6 lg:px-8">
+        <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900 via-blue-900 to-cyan-800 px-6 py-12 text-white shadow-2xl sm:px-10 lg:px-14 lg:py-16">
+          <div className="absolute -right-16 -top-14 h-56 w-56 rounded-full bg-cyan-300/20 blur-3xl" />
+          <div className="absolute -bottom-20 left-10 h-56 w-56 rounded-full bg-blue-400/20 blur-3xl" />
+
+          <div className="relative grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+            <div>
+              <p className="inline-flex rounded-full border border-white/25 bg-white/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.25em] text-cyan-100">
+                2025 Growth Plan
+              </p>
+              <h1 className="mt-5 text-4xl font-bold leading-tight text-white sm:text-5xl lg:text-6xl">
+                Grow your business in 2025
+              </h1>
+              <p className="mt-5 max-w-2xl text-base leading-7 text-blue-100 sm:text-lg">
+                Build in-demand digital skills with MIS programs and convert learning into real outcomes through guided projects, mentorship, and job-focused execution.
+              </p>
+
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                <button
+                  onClick={() => router.push('/courses')}
+                  className="inline-flex items-center justify-center rounded-full bg-white px-7 py-3 text-sm font-semibold text-slate-900 transition hover:bg-slate-100"
+                >
+                  Explore Courses
+                </button>
+                <button
+                  onClick={() => router.push('/contact')}
+                  className="inline-flex items-center justify-center rounded-full border border-white/40 px-7 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
+                >
+                  Request Consultation
+                </button>
+              </div>
+            </div>
+
+            <div className="rounded-2xl border border-white/20 bg-white/10 p-6 backdrop-blur">
+              <p className="text-sm uppercase tracking-[0.2em] text-cyan-100">Why this works</p>
+              <div className="mt-4 space-y-3">
+                {["Role-based training roadmap", "Live mentor feedback loops", "Portfolio and interview support"].map((item, index) => (
+                  <div key={item} className="flex items-center gap-3 rounded-xl bg-white/10 px-4 py-3 text-sm text-white">
+                    <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-cyan-400/40 font-bold text-white">
+                      {index + 1}
+                    </span>
+                    {item}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
       </div>
 
       <MasterCareerCourses />

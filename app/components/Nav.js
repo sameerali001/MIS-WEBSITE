@@ -27,9 +27,10 @@ export default function Nav() {
 
   return (
     <nav className="sticky top-0 z-[100] bg-white shadow-md">
-      <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
+      <div className="w-full px-4 py-4 sm:px-6 lg:px-8 xl:px-10">
+        <div className="flex items-center gap-4 xl:gap-6">
         {/* Logo */}
-        <div className="flex items-center">
+        <div className="flex shrink-0 items-center">
           <Link href="/" className="flex flex-col items-center gap-0">
             <div className="text-3xl font-bold text-blue-600 leading-none">MIS</div>
             {/* <div className="text-xs font-semibold text-slate-700 tracking-wide text-center">MASTER IN NETWORK & SOFTWARE TRAINING</div> */}
@@ -37,7 +38,7 @@ export default function Nav() {
         </div>
 
         {/* Navigation Menu */}
-        <div className="hidden lg:flex items-center gap-1">
+        <div className="hidden 2xl:flex min-w-0 flex-1 items-center justify-center gap-1">
           {/* All Courses - Click Dropdown */}
           <div className="relative">
             <button 
@@ -83,11 +84,6 @@ export default function Nav() {
             </div>
           </div>
 
-          {/* About Us */}
-          <Link href="/about" className="px-4 py-2 text-slate-700 hover:text-blue-600 font-medium transition-colors">
-            About Us
-          </Link>
-
           {/* Online Mode */}
           <Link href="/online" className="px-4 py-2 text-slate-700 hover:text-blue-600 font-medium transition-colors">
             Online
@@ -103,6 +99,11 @@ export default function Nav() {
             Schedule
           </Link>
 
+          {/* Franchise */}
+          <Link href="/franchise" className="px-4 py-2 text-slate-700 hover:text-blue-600 font-medium transition-colors">
+            Franchise
+          </Link>
+
           {/* Contact */}
           <Link href="/contact" className="px-4 py-2 text-slate-700 hover:text-blue-600 font-medium transition-colors">
             Contact Us
@@ -110,12 +111,19 @@ export default function Nav() {
         </div>
 
         {/* Search and Login */}
-        <div className="flex items-center gap-4">
-          <div className="hidden md:flex items-center bg-slate-100 rounded-full px-4 py-2">
+        <div className="ml-auto flex shrink-0 items-center gap-2 sm:gap-3">
+          <a
+            href="tel:+919318306116"
+            className="hidden lg:inline-flex items-center rounded-full border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-700 transition hover:border-blue-300 hover:text-blue-700"
+          >
+            +91 9318306116
+          </a>
+
+          <div className="hidden xl:flex items-center bg-slate-100 rounded-full px-4 py-2">
             <input
               type="text"
               placeholder="What do you want to learn?"
-              className="bg-transparent outline-none text-sm text-slate-700 placeholder-slate-400 w-48"
+              className="w-40 bg-transparent text-sm text-slate-700 placeholder-slate-400 outline-none 2xl:w-52"
             />
             <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -130,10 +138,11 @@ export default function Nav() {
           {/* Enroll Button */}
           <button
             onClick={handleEnrollClick}
-            className="hidden sm:block px-6 py-2 border-2 border-blue-500 text-blue-500 hover:bg-blue-50 rounded-full font-semibold transition-colors"
+            className="hidden md:block px-6 py-2 border-2 border-blue-500 text-blue-500 hover:bg-blue-50 rounded-full font-semibold transition-colors"
           >
             Enroll
           </button>
+        </div>
         </div>
       </div>
 

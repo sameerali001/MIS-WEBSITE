@@ -1,21 +1,47 @@
 'use client';
 
 import { useState } from 'react';
+import Layout from '../components/Layout';
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', message: '' });
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
-    setFormData({ name: '', email: '', phone: '', message: '' });
-    setTimeout(() => setSubmitted(false), 5000);
+    setSubmitError('');
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch('/api/contact-query', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result?.error || 'Failed to submit query.');
+      }
+
+      setSubmitted(true);
+      setFormData({ name: '', email: '', phone: '', message: '' });
+      setTimeout(() => setSubmitted(false), 5000);
+    } catch (error) {
+      setSubmitError(error instanceof Error ? error.message : 'Failed to submit query.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const contactItems = [
@@ -27,7 +53,12 @@ export default function ContactPage() {
         </svg>
       ),
       label: 'Address',
-      lines: ['MIS Campus, Sector 62, Noida', 'Uttar Pradesh 201309, India'],
+      lines: [
+        '3rd floor Capital Tower Survey chowk,',
+        'Opposite Vikas Bhawan,',
+        'near Parade Ground,',
+        'Dehradun-248001.',
+      ],
     },
     {
       icon: (
@@ -36,7 +67,7 @@ export default function ContactPage() {
         </svg>
       ),
       label: 'Phone',
-      lines: ['+91 82798 97142', '+91 87654 32109'],
+      lines: ['9318306116'],
     },
     {
       icon: (
@@ -45,7 +76,7 @@ export default function ContactPage() {
         </svg>
       ),
       label: 'Email',
-      lines: ['info@masterinstitute.com', 'support@masterinstitute.com'],
+      lines: ['misinfotechservices@gmail.com'],
     },
     {
       icon: (
@@ -59,143 +90,108 @@ export default function ContactPage() {
   ];
 
   return (
-    <div className="bg-white">
-      {/* Hero */}
-      <section className="relative bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 text-white overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_rgba(59,130,246,0.18),_transparent_60%)]" />
-        <div className="relative max-w-7xl mx-auto px-6 py-24 lg:py-28">
-          <div className="max-w-2xl">
-            <span className="inline-flex items-center gap-2 rounded-full border border-blue-400/30 bg-blue-500/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-blue-300 mb-6">
+    <Layout>
+      <section className="relative isolate overflow-hidden rounded-[2rem] bg-slate-950 px-6 py-10 text-white shadow-[0_28px_70px_rgba(15,23,42,0.35)] sm:px-8 lg:px-12 lg:py-14">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(59,130,246,0.24),_transparent_30%),radial-gradient(circle_at_80%_20%,_rgba(34,211,238,0.18),_transparent_24%),linear-gradient(145deg,_rgba(15,23,42,0.95),_rgba(15,23,42,0.88))]" />
+        <div className="relative grid gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
+          <div>
+            <p className="inline-flex rounded-full border border-white/20 bg-white/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.26em] text-cyan-200">
               Contact Us
-            </span>
-            <h1 className="text-5xl font-bold text-white mb-4">Get In Touch</h1>
-            <p className="text-lg text-slate-300 leading-relaxed">
-              Have questions about our courses or want to enrol? Our team is here to help you every step of the way.
             </p>
+            <h1 className="mt-5 max-w-4xl font-serif text-4xl leading-tight text-white sm:text-5xl">Talk to our counselling team.</h1>
+            <p className="mt-5 max-w-2xl text-base leading-7 text-slate-200 sm:text-lg">
+              Share your background, goals, and preferred learning mode. We will recommend the right course path.
+            </p>
+          </div>
+          <div className="rounded-[1.5rem] border border-white/10 bg-white/10 p-6 backdrop-blur">
+            <p className="text-xs uppercase tracking-[0.22em] text-cyan-200">Response window</p>
+            <p className="mt-3 text-sm leading-7 text-slate-200">Most queries are answered within 24 hours by phone or email.</p>
           </div>
         </div>
       </section>
 
-      {/* Main content */}
-      <section className="max-w-7xl mx-auto px-6 py-20 grid grid-cols-1 lg:grid-cols-5 gap-12">
-        {/* Left — contact info */}
-        <div className="lg:col-span-2 space-y-6">
-          <div>
-            <h2 className="text-2xl font-bold text-slate-900 mb-1">Contact Information</h2>
-            <div className="w-10 h-1 bg-blue-600 rounded-full mb-6" />
-          </div>
-
+      <section className="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-[340px_1fr]">
+        <aside className="space-y-4 rounded-[1.75rem] border border-slate-200 bg-white p-6 shadow-sm">
+          <h2 className="text-xl font-semibold text-slate-900">Contact Information</h2>
           {contactItems.map((item) => (
-            <div key={item.label} className="flex gap-4 p-5 rounded-2xl border border-slate-200 bg-slate-50 hover:border-blue-200 hover:bg-blue-50 transition-colors">
-              <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center text-white">
-                {item.icon}
+            <div key={item.label} className="rounded-2xl bg-slate-50 p-4">
+              <div className="flex items-center gap-3 text-slate-900">
+                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-900 text-white">{item.icon}</div>
+                <p className="text-sm font-semibold">{item.label}</p>
               </div>
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-widest text-slate-400 mb-1">{item.label}</p>
+              <div className="mt-3 space-y-1 text-sm text-slate-600">
                 {item.lines.map((line) => (
-                  <p key={line} className="text-slate-700 text-sm font-medium">{line}</p>
+                  <p key={line}>{line}</p>
                 ))}
               </div>
             </div>
           ))}
+        </aside>
 
-          {/* Social links */}
-          <div className="pt-2">
-            <p className="text-xs font-semibold uppercase tracking-widest text-slate-400 mb-4">Follow Us</p>
-            <div className="flex gap-3">
-              {[
-                { label: 'Facebook', href: '#', color: 'bg-blue-600 hover:bg-blue-700', icon: <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z" /> },
-                { label: 'LinkedIn', href: '#', color: 'bg-sky-600 hover:bg-sky-700', icon: <><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z" /><rect x="2" y="9" width="4" height="12" /><circle cx="4" cy="4" r="2" /></> },
-                { label: 'Instagram', href: '#', color: 'bg-pink-600 hover:bg-pink-700', icon: <><rect x="2" y="2" width="20" height="20" rx="5" ry="5" /><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z" /><line x1="17.5" y1="6.5" x2="17.51" y2="6.5" /></> },
-              ].map((s) => (
-                <a key={s.label} href={s.href} aria-label={s.label}
-                  className={`w-10 h-10 rounded-xl ${s.color} flex items-center justify-center text-white transition-colors`}>
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">{s.icon}</svg>
-                </a>
-              ))}
+        <div className="rounded-[1.75rem] border border-slate-200 bg-white p-7 shadow-sm">
+          <h2 className="text-2xl font-semibold text-slate-900">Send us a Message</h2>
+          {submitted && (
+            <div className="mt-5 rounded-2xl border border-emerald-200 bg-emerald-50 px-5 py-3 text-sm text-emerald-700">
+              Thank you! Your message has been sent successfully.
             </div>
-          </div>
-        </div>
-
-        {/* Right — form */}
-        <div className="lg:col-span-3">
-          <div className="bg-white border border-slate-200 rounded-3xl shadow-sm p-8 sm:p-10">
-            <h2 className="text-2xl font-bold text-slate-900 mb-1">Send us a Message</h2>
-            <div className="w-10 h-1 bg-blue-600 rounded-full mb-8" />
-
-            {submitted && (
-              <div className="mb-6 flex items-center gap-3 rounded-2xl bg-emerald-50 border border-emerald-200 px-5 py-4 text-emerald-700 text-sm font-medium">
-                <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                Thank you! Your message has been sent. We'll get back to you within 24 hours.
-              </div>
-            )}
-
-            <form onSubmit={handleSubmit} className="space-y-5">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                <div>
-                  <label htmlFor="name" className="block text-sm font-semibold text-slate-700 mb-2">Full Name <span className="text-red-500">*</span></label>
-                  <input
-                    type="text" id="name" name="name"
-                    value={formData.name} onChange={handleChange} required
-                    placeholder="Your full name"
-                    className="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition bg-slate-50"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="phone" className="block text-sm font-semibold text-slate-700 mb-2">Phone Number</label>
-                  <input
-                    type="tel" id="phone" name="phone"
-                    value={formData.phone} onChange={handleChange}
-                    placeholder="+91 98765 43210"
-                    className="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition bg-slate-50"
-                  />
-                </div>
-              </div>
-              <div>
-                <label htmlFor="email" className="block text-sm font-semibold text-slate-700 mb-2">Email Address <span className="text-red-500">*</span></label>
-                <input
-                  type="email" id="email" name="email"
-                  value={formData.email} onChange={handleChange} required
-                  placeholder="your@email.com"
-                  className="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition bg-slate-50"
-                />
-              </div>
-              <div>
-                <label htmlFor="message" className="block text-sm font-semibold text-slate-700 mb-2">Message <span className="text-red-500">*</span></label>
-                <textarea
-                  id="message" name="message"
-                  value={formData.message} onChange={handleChange} required
-                  rows={5} placeholder="Tell us how we can help you..."
-                  className="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition bg-slate-50 resize-none"
-                />
-              </div>
-              <button
-                type="submit"
-                className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors shadow-sm text-sm"
-              >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-                </svg>
-                Send Message
-              </button>
-            </form>
-          </div>
+          )}
+          {submitError && (
+            <div className="mt-5 rounded-2xl border border-rose-200 bg-rose-50 px-5 py-3 text-sm text-rose-700">
+              {submitError}
+            </div>
+          )}
+          <form onSubmit={handleSubmit} className="mt-6 space-y-5">
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+              <input
+                type="text"
+                id="name"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                required
+                placeholder="Full name"
+                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-blue-500 focus:bg-white"
+              />
+              <input
+                type="tel"
+                id="phone"
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+                placeholder="Phone number"
+                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-blue-500 focus:bg-white"
+              />
+            </div>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+              placeholder="Email address"
+              className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-blue-500 focus:bg-white"
+            />
+            <textarea
+              id="message"
+              name="message"
+              value={formData.message}
+              onChange={handleChange}
+              required
+              rows={5}
+              placeholder="Write your message"
+              className="w-full resize-none rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-blue-500 focus:bg-white"
+            />
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="inline-flex w-full items-center justify-center rounded-2xl bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800"
+            >
+              {isSubmitting ? 'Sending...' : 'Send Message'}
+            </button>
+          </form>
         </div>
       </section>
-
-      {/* Map placeholder */}
-      <section className="max-w-7xl mx-auto px-6 pb-20">
-        <div className="rounded-3xl overflow-hidden border border-slate-200 shadow-sm bg-slate-100 h-72 flex items-center justify-center">
-          <div className="text-center text-slate-400">
-            <svg className="w-12 h-12 mx-auto mb-3 opacity-50" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
-            </svg>
-            <p className="text-sm font-medium">Map — MIS Campus, Sector 62, Noida</p>
-          </div>
-        </div>
-      </section>
-    </div>
+    </Layout>
   );
 }
