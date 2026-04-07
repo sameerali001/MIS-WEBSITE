@@ -5,6 +5,7 @@ import Nav from './Nav';
 export default function Layout({ children }) {
   const pathname = usePathname();
   const isHomePage = pathname === '/';
+  const containerClass = 'mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8';
   const [heroImageError, setHeroImageError] = useState(false);
   const globalGlowRef = useRef(null);
   const globalGlowSmallRef = useRef(null);
@@ -115,7 +116,7 @@ export default function Layout({ children }) {
             `}</style>
             
             <header
-              className="relative overflow-hidden text-white py-12 md:py-20"
+              className="relative overflow-hidden text-white py-10 sm:py-14 lg:py-16"
               onMouseMove={handleHeroMouseMove}
               onMouseLeave={handleHeroMouseLeave}
             >
@@ -145,8 +146,8 @@ export default function Layout({ children }) {
                   style={{ opacity: 0 }}
                 />
               </div>
-              <div className="relative mx-auto w-[85%] px-4 sm:px-6 lg:px-8">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center min-h-[500px] md:min-h-[600px]">
+              <div className={`relative ${containerClass}`}>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center min-h-[520px]">
                   {/* Left Content */}
                   <div className="flex flex-col justify-center">
                     <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-4 text-white">
@@ -190,7 +191,7 @@ export default function Layout({ children }) {
                   </div>
 
                   {/* Right Image - Floating Animation */}
-                  <div className="hidden md:flex justify-center items-center">
+                  <div className="hidden lg:flex justify-center items-center min-h-[320px]">
                     <div className="relative w-full h-full flex items-center justify-center">
                       {/* Glowing background */}
                       <div className="absolute inset-0 bg-gradient-to-br from-cyan-400/20 to-blue-500/20 rounded-3xl blur-3xl"></div>
@@ -219,13 +220,13 @@ export default function Layout({ children }) {
           </>
         )}
 
-      <main className="mx-auto flex-1 w-[85%] px-4 sm:px-6 lg:px-8 py-10">
+      <main className={`${containerClass} flex-1 py-10`}>
         {children}
       </main>
 
       {/* Professional Footer */}
       <footer className="bg-slate-900 text-slate-100 mt-20 relative z-10">
-        <div className="mx-auto w-[85%] px-6 py-16">
+        <div className={`${containerClass} px-6 py-16`}>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
             {/* Company Info */}
             <div>

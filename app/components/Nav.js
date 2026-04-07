@@ -35,14 +35,17 @@ export default function Nav() {
   };
 
   return (
-    <nav className="sticky top-0 z-[100] bg-white shadow-md">
+    <nav className="sticky top-0 z-[100] border-b border-cyan-400/20 bg-gradient-to-r from-slate-950 via-slate-900 to-blue-950/95 backdrop-blur-sm">
       <div className="w-full px-4 py-4 sm:px-6 lg:px-8 xl:px-10">
         <div className="flex items-center gap-4 xl:gap-6">
         {/* Logo */}
         <div className="flex shrink-0 items-center">
-          <Link href="/" className="flex flex-col items-center gap-0">
-            <div className="text-3xl font-bold text-blue-600 leading-none">MIS</div>
-            {/* <div className="text-xs font-semibold text-slate-700 tracking-wide text-center">MASTER IN NETWORK & SOFTWARE TRAINING</div> */}
+          <Link href="/" className="flex items-center">
+            <img
+              src="/mis-logo.svg"
+              alt="MIS Skill Up"
+              className="h-14 w-auto lg:h-16"
+            />
           </Link>
         </div>
 
@@ -80,7 +83,7 @@ export default function Nav() {
 
           {/* About Dropdown */}
           <div className="relative group">
-            <button className="px-3 py-2 text-sm text-slate-700 hover:text-blue-600 font-medium flex items-center gap-1 transition-colors 2xl:px-4">
+            <button className="px-3 py-2 text-sm text-slate-100 hover:text-cyan-300 font-medium flex items-center gap-1 transition-colors 2xl:px-4">
               About Master
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
@@ -94,67 +97,51 @@ export default function Nav() {
           </div>
 
           {/* Online Mode */}
-          <Link href="/online" className="px-3 py-2 text-sm text-slate-700 hover:text-blue-600 font-medium transition-colors 2xl:px-4">
+          <Link href="/online" className="px-3 py-2 text-sm text-slate-100 hover:text-cyan-300 font-medium transition-colors 2xl:px-4">
             Online
           </Link>
 
           {/* Offline Mode */}
-          <Link href="/offline" className="px-3 py-2 text-sm text-slate-700 hover:text-blue-600 font-medium transition-colors 2xl:px-4">
+          <Link href="/offline" className="px-3 py-2 text-sm text-slate-100 hover:text-cyan-300 font-medium transition-colors 2xl:px-4">
             Offline
           </Link>
 
           {/* Schedule */}
-          <Link href="/schedule" className="px-3 py-2 text-sm text-slate-700 hover:text-blue-600 font-medium transition-colors 2xl:px-4">
+          <Link href="/schedule" className="px-3 py-2 text-sm text-slate-100 hover:text-cyan-300 font-medium transition-colors 2xl:px-4">
             Schedule
           </Link>
 
           {/* Franchise */}
-          <Link href="/franchise" className="px-3 py-2 text-sm text-slate-700 hover:text-blue-600 font-medium transition-colors 2xl:px-4">
+          <Link href="/franchise" className="px-3 py-2 text-sm text-slate-100 hover:text-cyan-300 font-medium transition-colors 2xl:px-4">
             Franchise
           </Link>
 
           {/* Contact */}
-          <Link href="/contact" className="px-3 py-2 text-sm text-slate-700 hover:text-blue-600 font-medium transition-colors 2xl:px-4">
+          <Link href="/contact" className="px-3 py-2 text-sm text-slate-100 hover:text-cyan-300 font-medium transition-colors 2xl:px-4">
             Contact Us
           </Link>
         </div>
 
         {/* Search and Login */}
-        <div className="ml-auto flex shrink-0 items-center gap-2 sm:gap-3">
-          <a
-            href="tel:+919318306116"
-            className="hidden lg:inline-flex items-center rounded-full border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-700 transition hover:border-blue-300 hover:text-blue-700"
-          >
-            +91 9318306116
-          </a>
-
-          <div className="hidden xl:flex items-center bg-slate-100 rounded-full px-4 py-2">
-            <input
-              type="text"
-              placeholder="What do you want to learn?"
-              className="w-40 bg-transparent text-sm text-slate-700 placeholder-slate-400 outline-none 2xl:w-52"
-            />
-            <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
-          </div>
-
-          {/* Profile Icon */}
-          <button className="hidden sm:flex w-10 h-10 bg-blue-500 hover:bg-blue-600 text-white rounded-full items-center justify-center font-bold transition-colors">
-            U
-          </button>
-
+        <div className="ml-auto flex shrink-0 items-center gap-2">
           {/* Enroll Button */}
           <button
             onClick={handleEnrollClick}
-            className="hidden lg:block px-5 py-2 border-2 border-blue-500 text-blue-500 hover:bg-blue-50 rounded-full font-semibold transition-colors"
+            className="hidden lg:block px-5 py-2 border-2 border-cyan-400 text-cyan-200 hover:bg-cyan-500/10 rounded-full font-semibold transition-colors"
           >
             Enroll
           </button>
 
+          <a
+            href="tel:+919318306116"
+            className="hidden lg:inline-flex items-center rounded-full border border-cyan-300/40 px-3 py-2 text-sm font-semibold text-cyan-100 transition hover:border-cyan-300 hover:text-cyan-200"
+          >
+            +91 9318306116
+          </a>
+
           <button
             onClick={toggleMobileMenu}
-            className="inline-flex xl:hidden h-10 w-10 items-center justify-center rounded-full border border-slate-200 text-slate-700"
+            className="inline-flex xl:hidden h-10 w-10 items-center justify-center rounded-full border border-cyan-300/30 text-slate-100"
             aria-label="Toggle menu"
             aria-expanded={isMobileMenuOpen}
           >
@@ -232,12 +219,6 @@ export default function Nav() {
           </div>
 
           <div className="mt-5 flex flex-col gap-3">
-            <a
-              href="tel:+919318306116"
-              className="inline-flex items-center justify-center rounded-xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700"
-            >
-              +91 9318306116
-            </a>
             <button
               onClick={() => {
                 closeMobileMenu();
@@ -247,6 +228,12 @@ export default function Nav() {
             >
               Enroll
             </button>
+            <a
+              href="tel:+919318306116"
+              className="inline-flex items-center justify-center rounded-xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700"
+            >
+              +91 9318306116
+            </a>
           </div>
         </aside>
       </div>

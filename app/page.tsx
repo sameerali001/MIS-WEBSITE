@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Layout from "./components/Layout";
 import MasterCareerCourses from "./components/MasterCareerCourses";
 import CourseEnrollmentForm from "./components/CourseEnrollmentForm";
+import { courses as courseCatalog } from "../lib/courseData";
 
 export default function Home() {
   const [isVisible] = useState(true);
@@ -25,6 +26,9 @@ export default function Home() {
     setIsEnrollmentFormOpen(false);
     setSelectedCourse(null);
   };
+
+  const certificationCourses = courseCatalog.filter((course) => course.category === "certification");
+  const getCertificationDuration = (duration: string) => (duration.includes("6") ? "6 Months" : "3 Months");
 
   const degreeCourses = [
     {
@@ -297,6 +301,55 @@ export default function Home() {
                 ))}
               </div>
             </div>
+          </div>
+        </section>
+      </div>
+
+      <div className="w-full px-4 sm:px-6 lg:px-8">
+        <section id="certification-courses" className="mt-16 rounded-3xl bg-slate-900 px-6 py-10 text-white shadow-2xl sm:px-10 lg:px-12">
+          <div className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <h2 className="text-3xl font-bold text-cyan-300 sm:text-4xl">Certification Courses</h2>
+              <p className="mt-2 text-sm text-cyan-100 sm:text-base">Fast-track certification programs with 3/6 month duration options.</p>
+            </div>
+            <span className="inline-flex w-fit rounded-full border border-cyan-300/40 bg-cyan-400/10 px-4 py-1 text-xs font-semibold tracking-wide text-cyan-100 sm:text-sm">
+              Duration: 3/6 Months
+            </span>
+          </div>
+
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {certificationCourses.map((course) => (
+              <article key={course.id} className="flex h-full flex-col overflow-hidden rounded-2xl border border-cyan-300/20 bg-slate-800/80 shadow-lg">
+                <div className="h-44 overflow-hidden">
+                  <img src={course.heroImage} alt={course.title} className="h-full w-full object-cover" />
+                </div>
+
+                <div className="flex flex-1 flex-col p-5">
+                  <h3 className="text-lg font-bold text-cyan-200">{course.title}</h3>
+                  <div className="mt-4 space-y-2 text-sm text-slate-100">
+                    <p><span className="font-semibold text-cyan-300">Course?</span> {course.title}</p>
+                    <p><span className="font-semibold text-cyan-300">Duration?</span> {getCertificationDuration(course.duration)}</p>
+                    <p><span className="font-semibold text-cyan-300">Mode?</span> {course.mode}</p>
+                    <p><span className="font-semibold text-cyan-300">Certification?</span> {course.certification}</p>
+                  </div>
+
+                  <div className="mt-5 flex gap-2">
+                    <button
+                      onClick={() => handleExploreCourse(course.slug)}
+                      className="w-1/2 rounded-lg border border-cyan-300/40 px-3 py-2 text-sm font-semibold text-cyan-100 transition hover:bg-cyan-500/10"
+                    >
+                      Learn More
+                    </button>
+                    <button
+                      onClick={() => handleCourseClick(course.title, course.slug)}
+                      className="w-1/2 rounded-lg bg-cyan-500 px-3 py-2 text-sm font-semibold text-slate-950 transition hover:bg-cyan-400"
+                    >
+                      Enroll Now
+                    </button>
+                  </div>
+                </div>
+              </article>
+            ))}
           </div>
         </section>
       </div>

@@ -1,8 +1,15 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 
 export default function Modal({ isOpen, onClose, title, children, showFooter = true, onSave = () => {} }) {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -15,18 +22,18 @@ export default function Modal({ isOpen, onClose, title, children, showFooter = t
     };
   }, [isOpen]);
 
-  if (!isOpen) return null;
+  if (!isOpen || !mounted) return null;
 
-  return (
+  return createPortal(
     <>
       {/* Backdrop with Blur Only */}
       <div
         onClick={onClose}
-        className="fixed inset-0 backdrop-blur-md z-[9999] transition-all duration-300 animate-fadeIn"
+        className="fixed inset-0 backdrop-blur-md z-[2147483646] transition-all duration-300 animate-fadeIn"
       />
 
       {/* Modal */}
-      <div className="fixed inset-0 z-[10000] flex items-center justify-center pointer-events-none p-4 overflow-y-auto">
+      <div className="fixed inset-0 z-[2147483647] flex items-center justify-center pointer-events-none p-4 overflow-y-auto">
         <div
           className="bg-white rounded-lg shadow-2xl max-w-md w-full my-auto pointer-events-auto animate-slideUp max-h-[90vh] overflow-y-auto"
           onClick={(e) => e.stopPropagation()}
@@ -110,6 +117,7 @@ export default function Modal({ isOpen, onClose, title, children, showFooter = t
           animation: slideUp 0.4s ease-out forwards;
         }
       `}</style>
-    </>
+    </>,
+    document.body
   );
 }
