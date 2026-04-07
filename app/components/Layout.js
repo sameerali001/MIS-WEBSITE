@@ -72,9 +72,18 @@ export default function Layout({ children }) {
 
   return (
     <div 
-      className="min-h-screen flex flex-col bg-slate-50 text-slate-900 relative"
+      className="min-h-screen flex flex-col text-slate-900 relative overflow-hidden"
       onMouseMove={handleGlobalMouseMove}
     >
+      <div
+        className="pointer-events-none absolute inset-0 z-0 bg-cover bg-center opacity-35"
+        style={{
+          backgroundImage:
+            "url('https://images.unsplash.com/photo-1446776877081-d282a0f896e2?auto=format&fit=crop&w=2200&q=80')",
+        }}
+      />
+      <div className="pointer-events-none absolute inset-0 z-0 bg-gradient-to-b from-slate-100/85 via-slate-100/80 to-cyan-50/80" />
+      <div className="pointer-events-none absolute inset-0 z-0 bg-[radial-gradient(circle_at_12%_20%,rgba(34,211,238,0.18),transparent_42%),radial-gradient(circle_at_84%_76%,rgba(14,116,144,0.16),transparent_45%)]" />
       <div
         ref={globalGlowRef}
         className="pointer-events-none fixed left-0 top-0 h-72 w-72 rounded-full bg-cyan-300/20 blur-3xl transition-opacity duration-200 ease-out z-[5] will-change-transform"
@@ -220,8 +229,10 @@ export default function Layout({ children }) {
           </>
         )}
 
-      <main className={`${containerClass} flex-1 py-10`}>
-        {children}
+      <main className={`${containerClass} relative z-10 flex-1 py-10`}>
+        <div className="rounded-[28px] border border-white/60 bg-white/60 p-4 shadow-[0_20px_60px_rgba(15,23,42,0.18)] backdrop-blur-md sm:p-6 lg:p-8">
+          {children}
+        </div>
       </main>
 
       {/* Professional Footer */}

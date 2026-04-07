@@ -253,9 +253,6 @@ export default function MasterCareerCourses() {
             </div>
             <div className="w-full bg-[#1c2a4a] py-10">
                 <div className="w-full px-4 sm:px-6 lg:px-8">
-                    <h3 className="text-2xl sm:text-3xl font-bold text-white mb-6">
-                        
-                    </h3>
                     <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
                         {masterCourses.map((course) => (
                             <div
@@ -267,86 +264,6 @@ export default function MasterCareerCourses() {
                                         src={course.image}
                                         alt={course.title}
                                         className="h-full w-full object-cover"
-                                    />
-                                </div>
-                                <div className="p-4 flex flex-col flex-1">
-                                    <h4 className="text-[#1e3a8a] font-semibold text-base leading-snug">
-                                        {course.title}
-                                    </h4>
-                                    <div className="mt-3 space-y-1 text-sm text-slate-700">
-                                        <div className="flex items-center gap-2">
-                                            <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-blue-50 text-[#1e3a8a]">
-                                                <svg
-                                                    className="w-4 h-4"
-                                                    fill="none"
-                                                    stroke="currentColor"
-                                                    viewBox="0 0 24 24"
-                                                >
-                                                    <path
-                                                        strokeLinecap="round"
-                                                        strokeLinejoin="round"
-                                                        strokeWidth={2}
-                                                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                                                    />
-                                                </svg>
-                                            </span>
-                                            <span>{course.duration}</span>
-                                        </div>
-                                        <div className="flex items-center gap-2">
-                                            <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-blue-50 text-[#1e3a8a]">
-                                                <svg
-                                                    className="w-4 h-4"
-                                                    fill="none"
-                                                    stroke="currentColor"
-                                                    viewBox="0 0 24 24"
-                                                >
-                                                    <path
-                                                        strokeLinecap="round"
-                                                        strokeLinejoin="round"
-                                                        strokeWidth={2}
-                                                        d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
-                                                    />
-                                                </svg>
-                                            </span>
-                                            <span>{course.mode}</span>
-                                        </div>
-                                    </div>
-                                    <div className="mt-4 border-t border-blue-200" />
-                                    <div className="mt-3 text-sm font-semibold text-slate-800 flex-1">
-                                        Explore More
-                                    </div>
-                                    <div className="mt-4 flex gap-2">
-                                        <button onClick={() => openCourseDetail(course.title)} className="w-1/2 rounded-lg border border-[#1e3a8a] text-[#1e3a8a] hover:bg-blue-50 font-semibold py-2.5 transition-colors">
-                                            Learn More
-                                        </button>
-                                        <button onClick={() => handleEnrollClick(course.title)} className="w-1/2 rounded-lg bg-[#1e3a8a] hover:bg-[#1b347c] text-white font-semibold py-2.5 transition-colors">
-                                            Enroll Now
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </div>
-
-            {/* Basic Courses Section */}
-            <div className="w-full bg-gradient-to-b from-slate-700 to-slate-600 py-10">
-                <div className="w-full px-4 sm:px-6 lg:px-8">
-                    <h3 className="text-2xl sm:text-3xl font-bold text-white mb-6">
-                        SKILL DEVELOPMENT COURSES
-                    </h3>
-                    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                        {basicCourses.map((course) => (
-                            <div
-                                key={course.title}
-                                className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow flex flex-col h-full"
-                            >
-                                <div className="h-44 overflow-hidden">
-                                    <img
-                                        src={course.image}
-                                        alt={course.title}
-                                        className="h-full w-full object-cover hover:scale-105 transition-transform duration-300"
                                     />
                                 </div>
                                 <div className="p-4 flex flex-col flex-1">
@@ -524,6 +441,86 @@ export default function MasterCareerCourses() {
                                 </button>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Skill Development Courses Section */}
+            <div className="w-full bg-gradient-to-b from-slate-700 to-slate-600 py-10 mt-10">
+                <div className="w-full px-4 sm:px-6 lg:px-8">
+                    <h3 className="text-2xl sm:text-3xl font-bold text-white mb-6">
+                        SKILL DEVELOPMENT COURSES
+                    </h3>
+                    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                        {basicCourses.map((course) => (
+                            <div
+                                key={course.title}
+                                className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow flex flex-col h-full"
+                            >
+                                <div className="h-44 overflow-hidden">
+                                    <img
+                                        src={course.image}
+                                        alt={course.title}
+                                        className="h-full w-full object-cover hover:scale-105 transition-transform duration-300"
+                                    />
+                                </div>
+                                <div className="p-4 flex flex-col flex-1">
+                                    <h4 className="text-[#1e3a8a] font-semibold text-base leading-snug">
+                                        {course.title}
+                                    </h4>
+                                    <div className="mt-3 space-y-1 text-sm text-slate-700">
+                                        <div className="flex items-center gap-2">
+                                            <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-blue-50 text-[#1e3a8a]">
+                                                <svg
+                                                    className="w-4 h-4"
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    viewBox="0 0 24 24"
+                                                >
+                                                    <path
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                        strokeWidth={2}
+                                                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                                                    />
+                                                </svg>
+                                            </span>
+                                            <span>{course.duration}</span>
+                                        </div>
+                                        <div className="flex items-center gap-2">
+                                            <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-blue-50 text-[#1e3a8a]">
+                                                <svg
+                                                    className="w-4 h-4"
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    viewBox="0 0 24 24"
+                                                >
+                                                    <path
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                        strokeWidth={2}
+                                                        d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+                                                    />
+                                                </svg>
+                                            </span>
+                                            <span>{course.mode}</span>
+                                        </div>
+                                    </div>
+                                    <div className="mt-4 border-t border-blue-200" />
+                                    <div className="mt-3 text-sm font-semibold text-slate-800 flex-1">
+                                        Explore More
+                                    </div>
+                                    <div className="mt-4 flex gap-2">
+                                        <button onClick={() => openCourseDetail(course.title)} className="w-1/2 rounded-lg border border-[#1e3a8a] text-[#1e3a8a] hover:bg-blue-50 font-semibold py-2.5 transition-colors">
+                                            Learn More
+                                        </button>
+                                        <button onClick={() => handleEnrollClick(course.title)} className="w-1/2 rounded-lg bg-[#1e3a8a] hover:bg-[#1b347c] text-white font-semibold py-2.5 transition-colors">
+                                            Enroll Now
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </div>

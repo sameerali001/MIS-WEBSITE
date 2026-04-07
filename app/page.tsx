@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import Layout from "./components/Layout";
 import MasterCareerCourses from "./components/MasterCareerCourses";
 import CourseEnrollmentForm from "./components/CourseEnrollmentForm";
-import { courses as courseCatalog } from "../lib/courseData";
+import { technologyTracks } from "../lib/technologyTracks";
 
 export default function Home() {
   const [isVisible] = useState(true);
@@ -22,13 +22,18 @@ export default function Home() {
     router.push(`/courses/${courseSlug}`);
   };
 
+  const handleTechnologyExplore = (trackSlug: string) => {
+    router.push(`/technologies/${trackSlug}`);
+  };
+
+  const handleTechnologyEnroll = (trackTitle: string) => {
+    router.push(`/contact?track=${encodeURIComponent(trackTitle)}`);
+  };
+
   const handleFormClose = () => {
     setIsEnrollmentFormOpen(false);
     setSelectedCourse(null);
   };
-
-  const certificationCourses = courseCatalog.filter((course) => course.category === "certification");
-  const getCertificationDuration = (duration: string) => (duration.includes("6") ? "6 Months" : "3 Months");
 
   const degreeCourses = [
     {
@@ -254,95 +259,68 @@ export default function Home() {
         }
       `}</style>
 
-      {/* Hero Section */}
-      <div className="w-full px-4 sm:px-6 lg:px-8">
-        <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900 via-blue-900 to-cyan-800 px-6 py-12 text-white shadow-2xl sm:px-10 lg:px-14 lg:py-16">
-          <div className="absolute -right-16 -top-14 h-56 w-56 rounded-full bg-cyan-300/20 blur-3xl" />
-          <div className="absolute -bottom-20 left-10 h-56 w-56 rounded-full bg-blue-400/20 blur-3xl" />
-
-          <div className="relative grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+      <div className="mx-auto w-full max-w-[1420px] px-4 sm:px-6 lg:px-8">
+        <section id="certification-tracks" className="mb-6 mt-1 rounded-3xl border border-cyan-100 bg-white/80 px-5 py-9 shadow-xl backdrop-blur sm:px-7 lg:px-10 lg:py-10">
+          <div className="mb-8 flex items-end justify-between gap-4">
             <div>
-              <p className="inline-flex rounded-full border border-white/25 bg-white/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.25em] text-cyan-100">
-                2025 Growth Plan
-              </p>
-              <h1 className="mt-5 text-4xl font-bold leading-tight text-white sm:text-5xl lg:text-6xl">
-                Grow your business in 2025
-              </h1>
-              <p className="mt-5 max-w-2xl text-base leading-7 text-blue-100 sm:text-lg">
-                Build in-demand digital skills with MIS programs and convert learning into real outcomes through guided projects, mentorship, and job-focused execution.
-              </p>
-
-              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                <button
-                  onClick={() => router.push('/courses')}
-                  className="inline-flex items-center justify-center rounded-full bg-white px-7 py-3 text-sm font-semibold text-slate-900 transition hover:bg-slate-100"
-                >
-                  Explore Courses
-                </button>
-                <button
-                  onClick={() => router.push('/contact')}
-                  className="inline-flex items-center justify-center rounded-full border border-white/40 px-7 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
-                >
-                  Request Consultation
-                </button>
-              </div>
-            </div>
-
-            <div className="rounded-2xl border border-white/20 bg-white/10 p-6 backdrop-blur">
-              <p className="text-sm uppercase tracking-[0.2em] text-cyan-100">Why this works</p>
-              <div className="mt-4 space-y-3">
-                {["Role-based training roadmap", "Live mentor feedback loops", "Portfolio and interview support"].map((item, index) => (
-                  <div key={item} className="flex items-center gap-3 rounded-xl bg-white/10 px-4 py-3 text-sm text-white">
-                    <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-cyan-400/40 font-bold text-white">
-                      {index + 1}
-                    </span>
-                    {item}
-                  </div>
-                ))}
-              </div>
+              <h2 className="text-3xl font-bold text-slate-800 sm:text-4xl">Certification Courses</h2>
+              <p className="mt-2 text-sm text-slate-600 sm:text-base">Industry-recognized certification tracks with practical labs, mentor support, and career-focused outcomes.</p>
             </div>
           </div>
-        </section>
-      </div>
 
-      <div className="w-full px-4 sm:px-6 lg:px-8">
-        <section id="certification-courses" className="mt-16 rounded-3xl bg-slate-900 px-6 py-10 text-white shadow-2xl sm:px-10 lg:px-12">
-          <div className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <h2 className="text-3xl font-bold text-cyan-300 sm:text-4xl">Certification Courses</h2>
-              <p className="mt-2 text-sm text-cyan-100 sm:text-base">Fast-track certification programs with 3/6 month duration options.</p>
-            </div>
-            <span className="inline-flex w-fit rounded-full border border-cyan-300/40 bg-cyan-400/10 px-4 py-1 text-xs font-semibold tracking-wide text-cyan-100 sm:text-sm">
-              Duration: 3/6 Months
-            </span>
-          </div>
-
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {certificationCourses.map((course) => (
-              <article key={course.id} className="flex h-full flex-col overflow-hidden rounded-2xl border border-cyan-300/20 bg-slate-800/80 shadow-lg">
-                <div className="h-44 overflow-hidden">
-                  <img src={course.heroImage} alt={course.title} className="h-full w-full object-cover" />
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
+            {technologyTracks.map((card, index) => (
+              <article
+                key={card.title}
+                className={`flex h-full w-full flex-col overflow-hidden rounded-[24px] border border-[#d6e3ff] bg-[#f9fbff] shadow-[0_10px_28px_rgba(37,77,160,0.18)] transition-all duration-300 hover:-translate-y-1 ${
+                  isVisible ? `animate-scaleIn stagger-${(index % 6) + 1}` : 'initial-hidden'
+                }`}
+              >
+                <div className="h-40 overflow-hidden sm:h-44">
+                  <img src={card.image} alt={card.title} className="h-full w-full object-cover" />
                 </div>
 
-                <div className="flex flex-1 flex-col p-5">
-                  <h3 className="text-lg font-bold text-cyan-200">{course.title}</h3>
-                  <div className="mt-4 space-y-2 text-sm text-slate-100">
-                    <p><span className="font-semibold text-cyan-300">Course?</span> {course.title}</p>
-                    <p><span className="font-semibold text-cyan-300">Duration?</span> {getCertificationDuration(course.duration)}</p>
-                    <p><span className="font-semibold text-cyan-300">Mode?</span> {course.mode}</p>
-                    <p><span className="font-semibold text-cyan-300">Certification?</span> {course.certification}</p>
+                <div className="flex flex-1 flex-col p-5 text-[#243f78] sm:p-5">
+                  <h3 className="min-h-[92px] text-[30px] font-bold leading-[1.1] text-[#21408d] sm:text-[34px]">{card.title}</h3>
+
+                  <div className="mt-5 space-y-2 text-[17px] text-[#30476e]">
+                    <p className="flex items-center gap-2">
+                      <span className="inline-flex h-6 w-6 items-center justify-center rounded-full border border-[#95addc] text-[#21408d]">
+                        <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                      </span>
+                      {card.duration}
+                    </p>
+                    <p className="flex items-center gap-2">
+                      <span className="inline-flex h-6 w-6 items-center justify-center rounded-full border border-[#95addc] text-[#21408d]">
+                        <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                        </svg>
+                      </span>
+                      {card.mode}
+                    </p>
                   </div>
 
-                  <div className="mt-5 flex gap-2">
+                  <div className="mt-4 border-t border-[#b8c9ed] pt-4">
                     <button
-                      onClick={() => handleExploreCourse(course.slug)}
-                      className="w-1/2 rounded-lg border border-cyan-300/40 px-3 py-2 text-sm font-semibold text-cyan-100 transition hover:bg-cyan-500/10"
+                      onClick={() => handleTechnologyExplore(card.slug)}
+                      className="text-left text-2xl font-semibold text-[#1f3366] transition hover:text-[#16306d]"
+                    >
+                      Explore More
+                    </button>
+                  </div>
+
+                  <div className="mt-5 grid grid-cols-2 gap-3">
+                    <button
+                      onClick={() => handleTechnologyExplore(card.slug)}
+                      className="min-h-[56px] rounded-xl border border-[#2f50a1] bg-white px-3 py-3 text-lg font-semibold text-[#234291] transition hover:bg-[#eff4ff]"
                     >
                       Learn More
                     </button>
                     <button
-                      onClick={() => handleCourseClick(course.title, course.slug)}
-                      className="w-1/2 rounded-lg bg-cyan-500 px-3 py-2 text-sm font-semibold text-slate-950 transition hover:bg-cyan-400"
+                      onClick={() => handleTechnologyEnroll(card.title)}
+                      className="min-h-[56px] rounded-xl bg-[#22439a] px-3 py-3 text-lg font-semibold text-white transition hover:bg-[#1a3477]"
                     >
                       Enroll Now
                     </button>
@@ -440,6 +418,57 @@ export default function Home() {
                 </div>
               </div>
             ))}
+          </div>
+        </section>
+      </div>
+
+      {/* Hero Section */}
+      <div className="w-full px-4 sm:px-6 lg:px-8">
+        <section className="relative mt-8 overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900 via-blue-900 to-cyan-800 px-6 py-12 text-white shadow-2xl sm:px-10 lg:px-14 lg:py-16">
+          <div className="absolute -right-16 -top-14 h-56 w-56 rounded-full bg-cyan-300/20 blur-3xl" />
+          <div className="absolute -bottom-20 left-10 h-56 w-56 rounded-full bg-blue-400/20 blur-3xl" />
+
+          <div className="relative grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+            <div>
+              <p className="inline-flex rounded-full border border-white/25 bg-white/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.25em] text-cyan-100">
+                2025 Growth Plan
+              </p>
+              <h1 className="mt-5 text-4xl font-bold leading-tight text-white sm:text-5xl lg:text-6xl">
+                Grow your business in 2025
+              </h1>
+              <p className="mt-5 max-w-2xl text-base leading-7 text-blue-100 sm:text-lg">
+                Build in-demand digital skills with MIS programs and convert learning into real outcomes through guided projects, mentorship, and job-focused execution.
+              </p>
+
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                <button
+                  onClick={() => router.push('/courses')}
+                  className="inline-flex items-center justify-center rounded-full bg-white px-7 py-3 text-sm font-semibold text-slate-900 transition hover:bg-slate-100"
+                >
+                  Explore Courses
+                </button>
+                <button
+                  onClick={() => router.push('/contact')}
+                  className="inline-flex items-center justify-center rounded-full border border-white/40 px-7 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
+                >
+                  Request Consultation
+                </button>
+              </div>
+            </div>
+
+            <div className="rounded-2xl border border-white/20 bg-white/10 p-6 backdrop-blur">
+              <p className="text-sm uppercase tracking-[0.2em] text-cyan-100">Why this works</p>
+              <div className="mt-4 space-y-3">
+                {["Role-based training roadmap", "Live mentor feedback loops", "Portfolio and interview support"].map((item, index) => (
+                  <div key={item} className="flex items-center gap-3 rounded-xl bg-white/10 px-4 py-3 text-sm text-white">
+                    <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-cyan-400/40 font-bold text-white">
+                      {index + 1}
+                    </span>
+                    {item}
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </section>
       </div>
